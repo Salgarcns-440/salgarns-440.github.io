@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WA Dashboard — GoalBlaze</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',sans-serif;background:#0f0f0f;color:#e5e5e5;min-height:100vh}
+.topbar{background:#111;border-bottom:1px solid #2a2a2a;padding:12px 24px;display:flex;align-items:center;justify-content:space-between}
+.logo{color:#25d366;font-weight:700;font-size:16px;display:flex;align-items:center;gap:8px}
+.logo-icon{width:28px;height:28px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.logo-icon svg{width:16px;height:16px;fill:#fff}
+.mode-badge{font-size:11px;padding:3px 10px;border-radius:20px;font-weight:600}
+.badge-demo{background:#f97316;color:#fff}
+.badge-live{background:#25d366;color:#fff}
+.connected{color:#22c55e;font-size:12px;display:flex;align-items:center;gap:5px}
+.connected::before{content:'';width:7px;height:7px;background:#22c55e;border-radius:50%;display:inline-block}
+.layout{display:flex;height:calc(100vh - 53px)}
+.sidebar{width:200px;background:#111;border-right:1px solid #2a2a2a;padding:16px 0;flex-shrink:0}
+.nav-item{padding:10px 20px;cursor:pointer;font-size:13px;color:#888;display:flex;align-items:center;gap:10px;transition:all .15s}
+.nav-item:hover{color:#e5e5e5;background:#1a1a1a}
+.nav-item.active{color:#25d366;background:#1a2e1f;border-left:3px solid #25d366}
+.nav-icon{width:16px;height:16px;flex-shrink:0}
+.main{flex:1;overflow-y:auto;padding:24px}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:18px;font-weight:600;margin-bottom:20px;color:#fff}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+.stat{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:16px}
+.stat-label{font-size:11px;color:#666;margin-bottom:6px;text-transform:uppercase;letter-spacing:.5px}
+.stat-value{font-size:24px;font-weight:700}
+.stat-value.green{color:#25d366}
+.stat-value.orange{color:#f97316}
+.stat-value.blue{color:#3b82f6}
+.stat-value.red{color:#ef4444}
+.card{background:#1a1a1a;border:1px solid #2a2a2a;border-radius:12px;padding:20px;margin-bottom:16px}
+.card-title{font-size:14px;font-weight:600;margin-bottom:16px;color:#fff}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+.form-group{display:flex;flex-direction:column;gap:6px;margin-bottom:12px}
+label{font-size:12px;color:#888}
+input,select,textarea{background:#252525;border:1px solid #333;border-radius:8px;color:#e5e5e5;padding:8px 12px;font-size:13px;outline:none;font-family:inherit;transition:border-color .15s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:#25d366}
+select option{background:#252525}
+textarea{resize:vertical;min-height:80px}
+.btn{padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;transition:all .15s;font-family:inherit}
+.btn-green{background:#25d366;color:#fff}
+.btn-green:hover{background:#1da851}
+.btn-green:disabled{background:#1a4a2a;color:#4ade80;cursor:not-allowed}
+.btn-outline{background:transparent;border:1px solid #333;color:#e5e5e5}
+.btn-outline:hover{border-color:#25d366;color:#25d366}
+.btn-red{background:#ef4444;color:#fff}
+.btn-row{display:flex;gap:10px;margin-top:8px}
+table{width:100%;border-collapse:collapse;font-size:13px}
+th{text-align:left;padding:10px 12px;color:#666;font-size:11px;text-transform:uppercase;letter-spacing:.5px;border-bottom:1px solid #2a2a2a}
+td{padding:10px 12px;border-bottom:1px solid #1f1f1f;color:#ccc}
+tr:hover td{background:#1f1f1f}
+.badge{display:inline-flex;align-items:center;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600}
+.badge-green{background:#14532d;color:#4ade80}
+.badge-orange{background:#431407;color:#fb923c}
+.badge-red{background:#450a0a;color:#f87171}
+.badge-blue{background:#1e3a5f;color:#60a5fa}
+.badge-gray{background:#222;color:#888}
+.search{background:#252525;border:1px solid #333;border-radius:8px;color:#e5e5e5;padding:8px 12px;font-size:13px;outline:none;width:280px;margin-bottom:16px}
+.search:focus{border-color:#25d366}
+.toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
+.char-count{font-size:11px;color:#666;text-align:right;margin-top:4px}
+.preview-box{background:#0b1f14;border:1px solid #1a4a2a;border-radius:10px;padding:14px;margin-top:12px;font-size:13px;color:#4ade80;line-height:1.6;min-height:60px}
+.preview-label{font-size:11px;color:#25d366;margin-bottom:8px;font-weight:600}
+.progress-bar{background:#252525;border-radius:20px;height:6px;margin-top:8px;overflow:hidden}
+.progress-fill{height:100%;border-radius:20px;background:#25d366;transition:width .3s}
+.bulk-status{margin-top:16px;display:none}
+.bulk-status.show{display:block}
+.log{background:#0a0a0a;border:1px solid #2a2a2a;border-radius:8px;padding:12px;max-height:160px;overflow-y:auto;font-family:monospace;font-size:12px;color:#4ade80;margin-top:12px}
+.log-line{margin-bottom:4px}
+.log-line.error{color:#f87171}
+.log-line.info{color:#60a5fa}
+.empty{text-align:center;padding:40px;color:#555;font-size:13px}
+.contact-avatar{width:32px;height:32px;border-radius:50%;background:#1a4a2a;display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;color:#25d366;flex-shrink:0}
+.contact-row{display:flex;align-items:center;gap:10px}
+.delete-btn{background:transparent;border:none;color:#555;cursor:pointer;padding:4px 8px;border-radius:4px;font-size:12px;transition:color .15s}
+.delete-btn:hover{color:#ef4444}
+.api-config{background:#0b1f14;border:1px solid #1a4a2a;border-radius:10px;padding:16px;margin-bottom:16px}
+.api-config-title{font-size:12px;color:#25d366;font-weight:600;margin-bottom:12px}
+.variable-pill{display:inline-block;background:#1a2e1f;color:#4ade80;border:1px solid #1a4a2a;border-radius:4px;padding:2px 8px;font-size:11px;font-family:monospace;cursor:pointer;margin:2px}
+.variable-pill:hover{background:#25d366;color:#fff}
+.toast{position:fixed;bottom:24px;right:24px;background:#1a2e1f;border:1px solid #25d366;border-radius:10px;padding:12px 20px;color:#4ade80;font-size:13px;font-weight:600;z-index:9999;display:none;animation:fadeIn .3s}
+.toast.error{background:#2e1a1a;border-color:#ef4444;color:#f87171}
+@keyframes fadeIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.loading{color:#666;font-size:13px;padding:20px;text-align:center}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-icon">
+      <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.126.556 4.118 1.526 5.845L.057 23.882l6.197-1.624A11.93 11.93 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.894a9.868 9.868 0 01-5.031-1.376l-.361-.214-3.741.981.997-3.648-.235-.374A9.861 9.861 0 012.106 12C2.106 6.528 6.528 2.106 12 2.106S21.894 6.528 21.894 12 17.472 21.894 12 21.894z"/></svg>
+    </div>
+    WA Dashboard
+  </div>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span class="mode-badge" id="mode-badge">LIVE MODE</span>
+    <span class="connected">Connected</span>
+  </div>
+</div>
+
+<div class="layout">
+  <div class="sidebar">
+    <div class="nav-item active" onclick="showPage('overview',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>Overview
+    </div>
+    <div class="nav-item" onclick="showPage('contacts',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>Contacts
+    </div>
+    <div class="nav-item" onclick="showPage('templates',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M14 2H6c-1.1 0-2 .9-2 2v16c0 1.1.89 2 2 2h12c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/></svg>Templates
+    </div>
+    <div class="nav-item" onclick="showPage('send',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>Send Message
+    </div>
+    <div class="nav-item" onclick="showPage('bulk',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M7 2v11h3v9l7-12h-4l4-8z"/></svg>Bulk Broadcast
+    </div>
+    <div class="nav-item" onclick="showPage('reports',this)">
+      <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>Reports
+    </div>
+  </div>
+
+  <div class="main">
+
+    <!-- OVERVIEW -->
+    <div id="page-overview" class="page active">
+      <div class="page-title">Overview</div>
+      <div class="stats">
+        <div class="stat"><div class="stat-label">Total Sent</div><div class="stat-value green" id="stat-sent">—</div></div>
+        <div class="stat"><div class="stat-label">Delivered</div><div class="stat-value blue" id="stat-delivered">—</div></div>
+        <div class="stat"><div class="stat-label">Failed</div><div class="stat-value red" id="stat-failed">—</div></div>
+        <div class="stat"><div class="stat-label">Contacts</div><div class="stat-value orange" id="stat-contacts">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Recent Activity</div>
+        <table>
+          <thead><tr><th>To</th><th>Message</th><th>Time</th><th>Status</th></tr></thead>
+          <tbody id="recent-log"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- CONTACTS -->
+    <div id="page-contacts" class="page">
+      <div class="page-title">Contacts</div>
+      <div class="card">
+        <div class="card-title">Add Contact</div>
+        <div class="form-row">
+          <div class="form-group"><label>Name</label><input id="c-name" placeholder="e.g. Rahul Sharma"/></div>
+          <div class="form-group"><label>Phone (with country code)</label><input id="c-phone" placeholder="e.g. 919876543210"/></div>
+        </div>
+        <div class="form-group"><label>Tag</label>
+          <select id="c-tag"><option>Customer</option><option>Lead</option><option>VIP</option><option>Wholesale</option></select>
+        </div>
+        <button class="btn btn-green" onclick="addContact()">+ Add Contact</button>
+      </div>
+      <div class="card">
+        <div class="toolbar">
+          <div class="card-title" style="margin:0">Contact List (<span id="contact-count">0</span>)</div>
+          <input class="search" placeholder="Search contacts..." oninput="filterContacts(this.value)"/>
+        </div>
+        <table>
+          <thead><tr><th>Name</th><th>Phone</th><th>Tag</th><th>Added</th><th></th></tr></thead>
+          <tbody id="contacts-table"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TEMPLATES -->
+    <div id="page-templates" class="page">
+      <div class="page-title">Message Templates</div>
+      <div class="card">
+        <div class="card-title">Create Template</div>
+        <div class="form-group"><label>Template Name</label><input id="t-name" placeholder="e.g. welcome_message"/></div>
+        <div class="form-group"><label>Category</label>
+          <select id="t-cat"><option>Marketing</option><option>Utility</option><option>Authentication</option></select>
+        </div>
+        <div class="form-group">
+          <label>Message Body</label>
+          <textarea id="t-body" placeholder="Hi {{1}}, welcome! Check out our latest offers." oninput="updatePreview()"></textarea>
+          <div class="char-count"><span id="char-count">0</span>/1024</div>
+        </div>
+        <div style="margin-bottom:8px">
+          <span style="font-size:12px;color:#666">Insert variable: </span>
+          <span class="variable-pill" onclick="insertVar('{{1}}')">{{1}}</span>
+          <span class="variable-pill" onclick="insertVar('{{2}}')">{{2}}</span>
+          <span class="variable-pill" onclick="insertVar('{{3}}')">{{3}}</span>
+        </div>
+        <div class="preview-label">Preview</div>
+        <div class="preview-box" id="t-preview">Your message preview will appear here...</div>
+        <div class="btn-row" style="margin-top:14px">
+          <button class="btn btn-green" onclick="saveTemplate()">Save Template</button>
+          <button class="btn btn-outline" onclick="clearTemplate()">Clear</button>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Saved Templates (<span id="template-count">0</span>)</div>
+        <table>
+          <thead><tr><th>Name</th><th>Category</th><th>Preview</th><th></th></tr></thead>
+          <tbody id="templates-table"><tr><td colspan="4" class="loading">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- SEND -->
+    <div id="page-send" class="page">
+      <div class="page-title">Send Single Message</div>
+      <div class="card">
+        <div class="form-group"><label>To (Phone with country code)</label><input id="s-phone" placeholder="919876543210"/></div>
+        <div class="form-group"><label>Use Template</label>
+          <select id="s-template" onchange="loadSendTemplate()"><option value="">-- Type custom message --</option></select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea id="s-message" placeholder="Type your message here..."></textarea></div>
+        <div class="btn-row">
+          <button class="btn btn-green" id="send-btn" onclick="sendSingle()">Send Message</button>
+          <button class="btn btn-outline" onclick="document.getElementById('s-phone').value='';document.getElementById('s-message').value=''">Clear</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- BULK -->
+    <div id="page-bulk" class="page">
+      <div class="page-title">Bulk Broadcast</div>
+      <div class="card">
+        <div class="form-group"><label>Select Audience</label>
+          <select id="b-audience" onchange="updateRecipientCount()">
+            <option value="all">All Contacts</option>
+            <option value="Customer">Customers only</option>
+            <option value="Lead">Leads only</option>
+            <option value="VIP">VIP only</option>
+            <option value="Wholesale">Wholesale only</option>
+          </select>
+        </div>
+        <div class="form-group"><label>Use Template</label>
+          <select id="b-template" onchange="loadBulkTemplate()"><option value="">-- Type custom message --</option></select>
+        </div>
+        <div class="form-group"><label>Message</label><textarea id="b-message" placeholder="Type your broadcast message..."></textarea></div>
+        <div style="font-size:12px;color:#666;margin-bottom:12px">Recipients: <strong style="color:#25d366" id="recipient-count">0</strong> contacts</div>
+        <button class="btn btn-green" id="bulk-btn" onclick="sendBulk()">Send Broadcast</button>
+        <div class="bulk-status" id="bulk-status">
+          <div style="font-size:13px;color:#888;margin-bottom:6px">Sending... <span id="bulk-progress-text">0%</span></div>
+          <div class="progress-bar"><div class="progress-fill" id="bulk-bar" style="width:0%"></div></div>
+          <div class="log" id="bulk-log"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div id="page-reports" class="page">
+      <div class="page-title">Delivery Reports</div>
+      <div class="stats" style="grid-template-columns:repeat(3,1fr)">
+        <div class="stat"><div class="stat-label">Delivery Rate</div><div class="stat-value green" id="r-rate">—</div></div>
+        <div class="stat"><div class="stat-label">Total Messages</div><div class="stat-value blue" id="r-total">—</div></div>
+        <div class="stat"><div class="stat-label">Failed</div><div class="stat-value red" id="r-failed">—</div></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Message Log</div>
+        <table>
+          <thead><tr><th>To</th><th>Message</th><th>Type</th><th>Time</th><th>Status</th></tr></thead>
+          <tbody id="report-log"><tr><td colspan="5" class="loading">Loading...</td></tr></tbody>
+        </table>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const WORKER = 'https://goalblaze-whatsapp.goalblaze-in.workers.dev';
+const TOKEN = prompt('Enter your dashboard access token (WA_VERIFY_TOKEN):') || '';
+
+let contacts = [], templates = [];
+
+function showToast(msg, isError=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast'+(isError?' error':'');
+  t.style.display='block';
+  setTimeout(()=>t.style.display='none',3000);
+}
+
+async function api(path, method='GET', body=null){
+  const opts={method,headers:{'Authorization':'Bearer '+TOKEN,'Content-Type':'application/json'}};
+  if(body) opts.body=JSON.stringify(body);
+  const res=await fetch(WORKER+path,opts);
+  return res.json();
+}
+
+function showPage(p, el){
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
+  document.getElementById('page-'+p).classList.add('active');
+  el.classList.add('active');
+  if(p==='overview')loadOverview();
+  if(p==='contacts')loadContacts();
+  if(p==='templates')loadTemplates();
+  if(p==='send'){loadTemplates();populateDropdowns();}
+  if(p==='bulk'){loadContacts();loadTemplates();populateDropdowns();updateRecipientCount();}
+  if(p==='reports')loadReports();
+}
+
+async function loadOverview(){
+  const [logs, ctcs] = await Promise.all([api('/logs'), api('/contacts')]);
+  const sent=logs.filter(m=>m.type!=='Inbound').length;
+  const delivered=logs.filter(m=>m.status==='Delivered').length;
+  const failed=logs.filter(m=>m.status==='Failed').length;
+  document.getElementById('stat-sent').textContent=sent;
+  document.getElementById('stat-delivered').textContent=delivered;
+  document.getElementById('stat-failed').textContent=failed;
+  document.getElementById('stat-contacts').textContent=ctcs.length;
+  const recent=logs.slice(-5).reverse();
+  const tb=document.getElementById('recent-log');
+  if(!recent.length){tb.innerHTML='<tr><td colspan="4" class="empty">No messages yet</td></tr>';return;}
+  tb.innerHTML=recent.map(m=>`<tr><td>${m.to}</td><td style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.msg}</td><td>${new Date(m.time).toLocaleTimeString()}</td><td><span class="badge badge-${m.status==='Delivered'?'green':m.status==='Failed'?'red':'blue'}">${m.status}</span></td></tr>`).join('');
+}
+
+async function loadContacts(){
+  contacts=await api('/contacts');
+  renderContacts();
+}
+
+function renderContacts(filter=''){
+  const tb=document.getElementById('contacts-table');
+  const filtered=contacts.filter(c=>c.name?.toLowerCase().includes(filter.toLowerCase())||c.phone?.includes(filter));
+  document.getElementById('contact-count').textContent=contacts.length;
+  if(!filtered.length){tb.innerHTML='<tr><td colspan="5" class="empty">No contacts found.</td></tr>';return;}
+  tb.innerHTML=filtered.map(c=>`<tr><td><div class="contact-row"><div class="contact-avatar">${(c.name||'?')[0].toUpperCase()}</div>${c.name}</div></td><td>${c.phone}</td><td><span class="badge badge-${c.tag==='VIP'?'orange':c.tag==='Lead'?'blue':c.tag==='Wholesale'?'gray':'green'}">${c.tag}</span></td><td>${new Date(c.added).toLocaleDateString()}</td><td><button class="delete-btn" onclick="deleteContact('${c.phone}')">✕</button></td></tr>`).join('');
+}
+
+function filterContacts(v){renderContacts(v);}
+
+async function addContact(){
+  const name=document.getElementById('c-name').value.trim();
+  const phone=document.getElementById('c-phone').value.trim();
+  const tag=document.getElementById('c-tag').value;
+  if(!name||!phone){showToast('Please enter name and phone.',true);return;}
+  await api('/contacts','POST',{name,phone,tag});
+  document.getElementById('c-name').value='';
+  document.getElementById('c-phone').value='';
+  showToast('Contact added!');
+  loadContacts();
+}
+
+async function deleteContact(phone){
+  if(!confirm('Delete this contact?'))return;
+  await api('/contacts','DELETE',{phone});
+  showToast('Contact deleted.');
+  loadContacts();
+}
+
+async function loadTemplates(){
+  templates=await api('/templates');
+  renderTemplates();
+}
+
+function renderTemplates(){
+  const tb=document.getElementById('templates-table');
+  document.getElementById('template-count').textContent=templates.length;
+  if(!templates.length){tb.innerHTML='<tr><td colspan="4" class="empty">No templates saved yet.</td></tr>';return;}
+  tb.innerHTML=templates.map(t=>`<tr><td><strong>${t.name}</strong></td><td>${t.cat}</td><td style="max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:#888">${t.body}</td><td><button class="delete-btn" onclick="deleteTemplate(${t.id})">✕</button></td></tr>`).join('');
+}
+
+async function saveTemplate(){
+  const name=document.getElementById('t-name').value.trim();
+  const cat=document.getElementById('t-cat').value;
+  const body=document.getElementById('t-body').value.trim();
+  if(!name||!body){showToast('Please fill name and body.',true);return;}
+  await api('/templates','POST',{name,cat,body});
+  showToast('Template saved!');
+  clearTemplate();
+  loadTemplates();
+}
+
+async function deleteTemplate(id){
+  await api('/templates','DELETE',{id});
+  showToast('Template deleted.');
+  loadTemplates();
+}
+
+function clearTemplate(){
+  document.getElementById('t-name').value='';
+  document.getElementById('t-body').value='';
+  document.getElementById('t-preview').textContent='Your message preview will appear here...';
+  document.getElementById('char-count').textContent='0';
+}
+
+function updatePreview(){
+  const body=document.getElementById('t-body').value;
+  document.getElementById('char-count').textContent=body.length;
+  document.getElementById('t-preview').textContent=body||'Your message preview will appear here...';
+}
+
+function insertVar(v){
+  const ta=document.getElementById('t-body');
+  const pos=ta.selectionStart;
+  ta.value=ta.value.slice(0,pos)+v+ta.value.slice(pos);
+  updatePreview();
+}
+
+function populateDropdowns(){
+  const opts='<option value="">-- Type custom message --</option>'+templates.map((t,i)=>`<option value="${i}">${t.name}</option>`).join('');
+  document.getElementById('s-template').innerHTML=opts;
+  document.getElementById('b-template').innerHTML=opts;
+}
+
+function loadSendTemplate(){
+  const idx=document.getElementById('s-template').value;
+  if(idx==='')return;
+  document.getElementById('s-message').value=templates[idx].body;
+}
+
+function loadBulkTemplate(){
+  const idx=document.getElementById('b-template').value;
+  if(idx==='')return;
+  document.getElementById('b-message').value=templates[idx].body;
+}
+
+function updateRecipientCount(){
+  const aud=document.getElementById('b-audience').value;
+  const count=aud==='all'?contacts.length:contacts.filter(c=>c.tag===aud).length;
+  document.getElementById('recipient-count').textContent=count;
+}
+
+async function sendSingle(){
+  const phone=document.getElementById('s-phone').value.trim();
+  const message=document.getElementById('s-message').value.trim();
+  if(!phone||!message){showToast('Please fill phone and message.',true);return;}
+  const btn=document.getElementById('send-btn');
+  btn.disabled=true;btn.textContent='Sending...';
+  const res=await api('/send','POST',{phone,message});
+  btn.disabled=false;btn.textContent='Send Message';
+  if(res.ok){showToast('Message sent successfully!');document.getElementById('s-phone').value='';document.getElementById('s-message').value='';}
+  else showToast('Failed: '+(res.error||'Unknown error'),true);
+}
+
+async function sendBulk(){
+  const msg=document.getElementById('b-message').value.trim();
+  const aud=document.getElementById('b-audience').value;
+  if(!msg){showToast('Please enter a message.',true);return;}
+  const targets=aud==='all'?contacts:contacts.filter(c=>c.tag===aud);
+  if(!targets.length){showToast('No contacts in selected audience.',true);return;}
+  const btn=document.getElementById('bulk-btn');
+  btn.disabled=true;btn.textContent='Sending...';
+  const statusEl=document.getElementById('bulk-status');
+  const bar=document.getElementById('bulk-bar');
+  const log=document.getElementById('bulk-log');
+  statusEl.classList.add('show');
+  log.innerHTML='';
+  const phones=targets.map(c=>c.phone);
+  const res=await api('/bulk','POST',{phones,message:msg});
+  res.results?.forEach((r,i)=>{
+    const pct=Math.round(((i+1)/res.results.length)*100);
+    bar.style.width=pct+'%';
+    document.getElementById('bulk-progress-text').textContent=pct+'%';
+    const line=document.createElement('div');
+    line.className='log-line'+(r.ok?'':' error');
+    line.textContent=`${targets[i]?.name||r.phone} — ${r.ok?'Delivered':'Failed: '+(r.error||'')}`;
+    log.appendChild(line);
+  });
+  btn.disabled=false;btn.textContent='Send Broadcast';
+  const done=document.createElement('div');
+  done.className='log-line info';
+  done.textContent=`Done. ${res.results?.filter(r=>r.ok).length||0}/${phones.length} delivered.`;
+  log.appendChild(done);
+  log.scrollTop=log.scrollHeight;
+}
+
+async function loadReports(){
+  const logs=await api('/logs');
+  const sent=logs.filter(m=>m.type!=='Inbound');
+  const delivered=sent.filter(m=>m.status==='Delivered').length;
+  const failed=sent.filter(m=>m.status==='Failed').length;
+  document.getElementById('r-rate').textContent=sent.length?Math.round((delivered/sent.length)*100)+'%':'0%';
+  document.getElementById('r-total').textContent=sent.length;
+  document.getElementById('r-failed').textContent=failed;
+  const tb=document.getElementById('report-log');
+  if(!logs.length){tb.innerHTML='<tr><td colspan="5" class="empty">No messages yet.</td></tr>';return;}
+  tb.innerHTML=[...logs].reverse().map(m=>`<tr><td>${m.to}</td><td style="max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${m.msg}</td><td><span class="badge badge-gray">${m.type}</span></td><td>${new Date(m.time).toLocaleTimeString()}</td><td><span class="badge badge-${m.status==='Delivered'?'green':m.status==='Received'?'blue':'red'}">${m.status}</span></td></tr>`).join('');
+}
+
+loadOverview();
+</script>
+</body>
+</html>
