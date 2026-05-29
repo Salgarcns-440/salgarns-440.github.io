@@ -1050,6 +1050,299 @@
     });
   });
 </script>
+<!-- ========== GOALBLAZE AI CHATBOT ========== -->
+<style>
+  #gb-launcher {
+    position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px;
+    background: #1a5c3a; border-radius: 50%; cursor: pointer; display: flex;
+    align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(26,92,58,0.5);
+    transition: transform .2s, box-shadow .2s; z-index: 9999;
+  }
+  #gb-launcher:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(26,92,58,0.7); }
+  #gb-launcher svg { width: 26px; height: 26px; fill: #fff; }
+  #gb-launcher .gb-close-icon { display: none; }
+  #gb-launcher.open .gb-chat-icon { display: none; }
+  #gb-launcher.open .gb-close-icon { display: block; }
 
+  #gb-window {
+    position: fixed; bottom: 92px; left: 24px; width: 360px; max-height: 540px;
+    background: #1a1a1a; border-radius: 16px; overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.6); display: none; flex-direction: column;
+    z-index: 9998; border: 1px solid #2a2a2a; animation: gbSlideUp .25s ease;
+  }
+  #gb-window.open { display: flex; }
+  @keyframes gbSlideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
+
+  .gb-header {
+    background: #111; padding: 14px 16px; display: flex; align-items: center; gap: 10px;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .gb-avatar {
+    width: 36px; height: 36px; background: #1a5c3a; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; color: #fff; font-size: 14px; flex-shrink: 0;
+  }
+  .gb-header-name { color: #fff; font-weight: 600; font-size: 14px; }
+  .gb-header-status { color: #22c55e; font-size: 11px; display: flex; align-items: center; gap: 4px; }
+  .gb-header-status::before { content:''; width:6px; height:6px; background:#22c55e; border-radius:50%; display:inline-block; }
+
+  #gb-messages {
+    flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px;
+    scrollbar-width: thin; scrollbar-color: #333 transparent;
+  }
+  #gb-messages::-webkit-scrollbar { width: 4px; }
+  #gb-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+
+  .gb-msg { max-width: 82%; display: flex; flex-direction: column; gap: 2px; }
+  .gb-msg.bot { align-self: flex-start; }
+  .gb-msg.user { align-self: flex-end; }
+  .gb-bubble { padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; word-break: break-word; }
+  .gb-msg.bot .gb-bubble { background: #252525; color: #e5e5e5; border-bottom-left-radius: 4px; }
+  .gb-msg.user .gb-bubble { background: #1a5c3a; color: #fff; border-bottom-right-radius: 4px; }
+
+  .gb-typing { display: flex; align-items: center; gap: 4px; padding: 10px 13px; background: #252525; border-radius: 14px; border-bottom-left-radius: 4px; width: fit-content; }
+  .gb-dot { width: 6px; height: 6px; background: #888; border-radius: 50%; animation: gbBounce .9s infinite; }
+  .gb-dot:nth-child(2) { animation-delay: .2s; }
+  .gb-dot:nth-child(3) { animation-delay: .4s; }
+  @keyframes gbBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-5px)} }
+
+  .gb-quick-replies { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+  .gb-qr {
+    background: transparent; border: 1px solid #1a5c3a; color: #4ade80;
+    padding: 5px 10px; border-radius: 20px; font-size: 12px; cursor: pointer;
+    transition: background .15s, color .15s; font-family: inherit;
+  }
+  .gb-qr:hover { background: #1a5c3a; color: #fff; }
+
+  .gb-lead-form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
+  .gb-lead-form input, .gb-lead-form textarea {
+    background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px;
+    color: #e5e5e5; padding: 8px 10px; font-size: 13px; outline: none; font-family: inherit;
+    transition: border-color .15s;
+  }
+  .gb-lead-form input:focus, .gb-lead-form textarea:focus { border-color: #1a5c3a; }
+  .gb-lead-form textarea { resize: none; height: 60px; }
+  .gb-lead-form button {
+    background: #1a5c3a; color: #fff; border: none; border-radius: 8px;
+    padding: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
+    transition: background .15s; font-family: inherit;
+  }
+  .gb-lead-form button:hover { background: #247a4e; }
+
+  .gb-input-area {
+    display: flex; align-items: center; gap: 8px; padding: 12px 14px;
+    border-top: 1px solid #2a2a2a; background: #111;
+  }
+  #gb-input {
+    flex: 1; background: #252525; border: 1px solid #333; border-radius: 20px;
+    color: #e5e5e5; padding: 8px 14px; font-size: 13px; outline: none; font-family: inherit;
+    transition: border-color .15s;
+  }
+  #gb-input:focus { border-color: #1a5c3a; }
+  #gb-input::placeholder { color: #555; }
+  #gb-send {
+    width: 36px; height: 36px; background: #1a5c3a; border: none; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background .15s; flex-shrink: 0;
+  }
+  #gb-send:hover { background: #247a4e; }
+  #gb-send svg { width: 16px; height: 16px; fill: #fff; }
+  .gb-brand { text-align: center; padding: 6px; font-size: 10px; color: #444; }
+  .gb-brand a { color: #4ade80; text-decoration: none; }
+</style>
+
+<!-- Launcher -->
+<div id="gb-launcher" onclick="gbToggle()">
+  <svg class="gb-chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
+  <svg class="gb-close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+</div>
+
+<!-- Chat Window -->
+<div id="gb-window">
+  <div class="gb-header">
+    <div class="gb-avatar">CK</div>
+    <div>
+      <div class="gb-header-name">GoalBlaze AI</div>
+      <div class="gb-header-status">Online now</div>
+    </div>
+  </div>
+  <div id="gb-messages"></div>
+  <div class="gb-input-area">
+    <input id="gb-input" type="text" placeholder="Ask me anything…" onkeydown="if(event.key==='Enter')gbSend()" />
+    <button id="gb-send" onclick="gbSend()">
+      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+    </button>
+  </div>
+  <div class="gb-brand">Powered by <a href="https://goalblaze.in" target="_blank">GoalBlaze</a></div>
+</div>
+
+<script>
+(function () {
+  const WORKER_URL = 'https://goalblaze-proxy.goalblaze-in.workers.dev';
+
+  const GB_CONTEXT = `You are the AI assistant for GoalBlaze, Chandrakant Salgar's personal performance marketing and MarTech consultancy. Your job is to help website visitors understand GoalBlaze's services, answer questions about Chandrakant's expertise, and capture leads.
+
+ABOUT CHANDRAKANT / GOALBLAZE:
+- Full name: Chandrakant Salgar
+- Role: Performance Marketer & MarTech Specialist
+- Based in Pune, Maharashtra, India
+- 2+ years of hands-on experience
+- Managed monthly ad budgets up to ₹1L+
+- Delivered 6x+ ROAS for D2C brands
+- Achieved ₹70–90 CPL for B2B campaigns
+- MBA Marketing, DY Patil University (2024–2026)
+- Contact: salgarchandrakant4@gmail.com | +91 70307 30440 | linkedin.com/in/chandrakant-salgar | goalblaze.in
+
+SKILLS:
+- Meta Ads: Lead gen, sales, awareness, Advantage+ campaigns. Full-funnel strategy TOFU to BOFU with conditional logic in lead forms to qualify leads at point of capture.
+- Google Ads: Search, Performance Max, Shopping, Demand Gen. Multi-property MCC management.
+- Conversion Tracking: Meta Pixel + CAPI (browser-side + server-side), GTM, GA4, Google Ads conversion setup, Data Layer implementation.
+- WhatsApp Cloud API: End-to-end integration, automation flows, abandoned cart recovery, post-purchase follow-up, opt-out handling, Odoo 19 CRM connectivity, Zapier integration.
+- Remarketing & Funnels: Lookalike audiences, custom audiences, abandoned cart targeting, remarketing ecosystems.
+- MarTech Stack: Odoo CRM, Shopify, WordPress, Looker Studio dashboards, Zapier, webhook configuration.
+
+SERVICES & PRICING:
+1. Meta Ads Management – ₹15,000–₹25,000/month: Full campaign management, strategy, creative briefing, audience setup, optimization, weekly reporting, Meta Pixel + CAPI verification.
+2. Conversion Tracking Setup – ₹12,000–₹20,000: Meta Pixel + CAPI installation, GTM full container setup, GA4 event configuration, Google Ads conversion tracking, Data Layer implementation.
+3. Google Ads Management – ₹15,000–₹25,000/month: Search, Shopping, PMAX and Demand Gen campaigns, Google Merchant Center, conversion tracking, monthly reporting.
+4. WhatsApp Automation – ₹15,000–₹25,000: Meta Cloud API integration, abandoned cart recovery flow, post-purchase follow-up, CRM connectivity via Odoo or Zapier, broadcast campaign setup.
+5. Full MarTech Stack – ₹35,000–₹50,000: Complete end-to-end setup — Meta + Google Ads, Pixel + CAPI + GTM + GA4, WhatsApp automation, CRM integration, Looker Studio dashboard.
+6. Ad Account Audit – ₹5,000–₹8,000: Deep audit of Meta or Google Ads account — tracking gaps, audience issues, budget waste, creative performance — with prioritized fix recommendations report.
+
+CASE STUDIES:
+1. Anutilam (D2C E-commerce):
+   - Problem: Broken Pixel, no attribution, only 5–6 orders/month
+   - Solution: Full audit, rebuilt Meta Pixel + CAPI from scratch, phased awareness-to-sales campaign strategy, built remarketing ecosystem, WhatsApp automation for abandoned cart + post-purchase
+   - Result: Scaled to 100–150 orders/day, ₹1–1.5L monthly revenue on ₹10–15k ad budget — 6x+ ROAS
+
+2. Jagtap Horticulture (B2B + E-commerce):
+   - Problem: No tracking infrastructure, needed full MarTech stack for 700-product business
+   - Solution: Built GTM + GA4 + Meta Pixel + CAPI on Odoo website, integrated WhatsApp Cloud API with Odoo 19 CRM, connected Meta Lead Ads via Zapier, ran B2B landscape development campaigns
+   - Result: ₹70–90 CPL for B2B leads, ₹1L+ monthly ad budget managed, 700+ products tracked
+
+TONE: Professional but friendly, concise, not salesy. Answer questions directly. If someone asks about pricing, give the range clearly. If unsure about something specific, direct them to email salgarchandrakant4@gmail.com or WhatsApp +91 70307 30440.`;
+
+  let gbMsgs = [], gbOpen = false, gbLeadDone = false;
+
+  window.gbToggle = function () {
+    gbOpen = !gbOpen;
+    document.getElementById('gb-window').classList.toggle('open', gbOpen);
+    document.getElementById('gb-launcher').classList.toggle('open', gbOpen);
+    if (gbOpen && gbMsgs.length === 0) gbInit();
+  };
+
+  function gbInit() {
+    gbAddBot("Hey there! 👋 I'm the GoalBlaze AI — happy to answer questions about services, pricing, or Chandrakant's work. What brings you here?", [
+      "Services & Pricing", "Case Studies", "About Chandrakant", "I have a project"
+    ]);
+  }
+
+  function gbAddBot(text, qr = []) {
+    const c = document.getElementById('gb-messages');
+    const d = document.createElement('div');
+    d.className = 'gb-msg bot';
+    d.innerHTML = `<div class="gb-bubble">${text}</div>`;
+    if (qr.length) {
+      const q = document.createElement('div');
+      q.className = 'gb-quick-replies';
+      qr.forEach(label => {
+        const b = document.createElement('button');
+        b.className = 'gb-qr'; b.textContent = label;
+        b.onclick = () => { gbRemoveQR(); gbSend(label); };
+        q.appendChild(b);
+      });
+      d.appendChild(q);
+    }
+    c.appendChild(d); c.scrollTop = c.scrollHeight;
+  }
+
+  function gbAddUser(text) {
+    const c = document.getElementById('gb-messages');
+    const d = document.createElement('div');
+    d.className = 'gb-msg user';
+    d.innerHTML = `<div class="gb-bubble">${gbEsc(text)}</div>`;
+    c.appendChild(d); c.scrollTop = c.scrollHeight;
+  }
+
+  function gbShowTyping() {
+    const c = document.getElementById('gb-messages');
+    const d = document.createElement('div');
+    d.className = 'gb-msg bot'; d.id = 'gb-typing';
+    d.innerHTML = `<div class="gb-typing"><div class="gb-dot"></div><div class="gb-dot"></div><div class="gb-dot"></div></div>`;
+    c.appendChild(d); c.scrollTop = c.scrollHeight;
+  }
+
+  function gbRemoveTyping() { const t = document.getElementById('gb-typing'); if (t) t.remove(); }
+  function gbRemoveQR() { document.querySelectorAll('.gb-quick-replies').forEach(e => e.remove()); }
+
+  function gbShowLeadForm() {
+    const c = document.getElementById('gb-messages');
+    const d = document.createElement('div');
+    d.className = 'gb-msg bot';
+    d.innerHTML = `<div class="gb-bubble">Let's get you connected! Fill this quick form 👇
+      <div class="gb-lead-form">
+        <input id="gb-lf-name" placeholder="Your name" type="text"/>
+        <input id="gb-lf-email" placeholder="Email address" type="email"/>
+        <textarea id="gb-lf-req" placeholder="What do you need help with?"></textarea>
+        <button onclick="gbSubmitLead()">Send →</button>
+      </div></div>`;
+    c.appendChild(d); c.scrollTop = c.scrollHeight;
+  }
+
+  window.gbSubmitLead = function () {
+    const name = document.getElementById('gb-lf-name').value.trim();
+    const email = document.getElementById('gb-lf-email').value.trim();
+    if (!name || !email) { alert('Please enter your name and email.'); return; }
+    gbLeadDone = true;
+    document.querySelector('.gb-lead-form').closest('.gb-bubble').innerHTML =
+      `✅ Got it, <strong>${gbEsc(name)}</strong>! Chandrakant will reach out at <strong>${gbEsc(email)}</strong> within 24 hours.`;
+  };
+
+  window.gbSend = async function (override) {
+    const inp = document.getElementById('gb-input');
+    const text = override || inp.value.trim();
+    if (!text) return;
+    inp.value = '';
+    gbRemoveQR();
+    gbAddUser(text);
+
+    const leadKws = ['hire', 'project', 'quote', 'work together', 'contact', 'get started', 'i need', 'help me', 'reach out', 'discuss', 'talk'];
+    if (!gbLeadDone && leadKws.some(k => text.toLowerCase().includes(k))) {
+      gbMsgs.push({ role: 'user', content: text });
+      gbShowLeadForm();
+      return;
+    }
+
+    gbMsgs.push({ role: 'user', content: text });
+    gbShowTyping();
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ system: GB_CONTEXT, messages: gbMsgs.slice(-10) })
+      });
+      const data = await res.json();
+      const reply = data.text || "Sorry, couldn't get a response. Email salgarchandrakant4@gmail.com directly.";
+      gbRemoveTyping();
+      gbMsgs.push({ role: 'assistant', content: reply });
+      const fmt = reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+      const c = document.getElementById('gb-messages');
+      const d = document.createElement('div');
+      d.className = 'gb-msg bot';
+      d.innerHTML = `<div class="gb-bubble">${fmt}</div>`;
+      c.appendChild(d); c.scrollTop = c.scrollHeight;
+    } catch (e) {
+      gbRemoveTyping();
+      gbAddBot("Oops, something went wrong. Please email salgarchandrakant4@gmail.com directly.");
+    }
+  };
+
+  function gbEsc(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  }
+})();
+</script>
+<!-- ========== END GOALBLAZE CHATBOT ========== -->
 </body>
 </html>
