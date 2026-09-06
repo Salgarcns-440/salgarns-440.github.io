@@ -3,1346 +3,568 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chandrakant Salgar | Performance Marketer & MarTech Specialist</title>
+<title>Chandrakant Salgar — Performance Marketing Specialist</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=IBM+Plex+Serif:ital,wght@1,400&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --black: #0a0a0a;
-    --white: #f8f7f4;
-    --cream: #f2f0eb;
-    --gray-100: #e5e3dc;
-    --gray-300: #b5b2a8;
-    --gray-500: #6e6b61;
-    --gray-700: #3d3b34;
-    --green: #1a5c3a;
-    --green-mid: #247a4e;
-    --green-light: #e8f2ec;
-    --green-glow: rgba(26,92,58,0.12);
-    --serif: 'Playfair Display', Georgia, serif;
-    --sans: 'Outfit', system-ui, sans-serif;
+  :root{
+    --bg:#101a2b;
+    --panel:#16233a;
+    --panel-2:#0d1522;
+    --text:#f1efe8;
+    --text-muted:#93a0b4;
+    --accent:#d9a441;
+    --line:rgba(241,239,232,0.14);
+    --line-strong:rgba(241,239,232,0.24);
+    --maxw:1040px;
   }
 
-  html { scroll-behavior: smooth; }
-
-  body {
-    font-family: var(--sans);
-    background: var(--white);
-    color: var(--black);
-    font-size: 16px;
-    line-height: 1.7;
-    font-weight: 300;
-    overflow-x: hidden;
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
   }
 
-  /* NAV */
-  nav {
-    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 1.25rem 4rem;
-    background: rgba(248,247,244,0.94);
-    backdrop-filter: blur(16px);
-    border-bottom: 1px solid var(--gray-100);
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:"IBM Plex Sans", sans-serif;
+    font-feature-settings:"tnum" 1, "lnum" 1;
+    line-height:1.55;
+    -webkit-font-smoothing:antialiased;
   }
 
-  .nav-logo {
-    font-family: var(--serif);
-    font-size: 1.25rem;
-    color: var(--green);
-    text-decoration: none;
-    letter-spacing: -0.01em;
-    font-weight: 700;
+  a{color:inherit;}
+
+  .wrap{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:0 32px;
   }
 
-  .nav-links { display: flex; gap: 2.5rem; list-style: none; align-items: center; }
-  .nav-links a {
-    font-size: 0.82rem;
-    font-weight: 500;
-    color: var(--gray-500);
-    text-decoration: none;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    transition: color 0.2s;
+  /* ---------- Nav ---------- */
+  header.site{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(16,26,43,0.92);
+    backdrop-filter:blur(6px);
+    border-bottom:1px solid var(--line);
   }
-  .nav-links a:hover { color: var(--black); }
-  .nav-cta {
-    background: var(--green) !important;
-    color: var(--white) !important;
-    padding: 0.5rem 1.2rem;
-    border-radius: 0.25rem;
-    transition: background 0.2s !important;
+  .nav-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:16px 32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:24px;
   }
-  .nav-cta:hover { background: var(--green-mid) !important; }
+  .nav-mark{
+    font-weight:600;
+    font-size:15px;
+    letter-spacing:0.01em;
+    white-space:nowrap;
+  }
+  nav.links{
+    display:flex;
+    gap:28px;
+    font-size:14px;
+    color:var(--text-muted);
+  }
+  nav.links a{
+    text-decoration:none;
+    transition:color .15s ease;
+  }
+  nav.links a:hover, nav.links a:focus-visible{ color:var(--text); }
+  .nav-contact{
+    font-size:14px;
+    color:var(--accent);
+    text-decoration:none;
+    white-space:nowrap;
+    border:1px solid rgba(217,164,65,0.5);
+    padding:7px 14px;
+    border-radius:2px;
+  }
+  .nav-contact:hover, .nav-contact:focus-visible{ background:rgba(217,164,65,0.1); }
 
-  /* HERO */
-  #hero {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    padding-top: 80px;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .hero-bg {
-    position: absolute; inset: 0;
-    background: radial-gradient(ellipse at 70% 50%, var(--green-glow) 0%, transparent 60%);
-    pointer-events: none;
-  }
-
-  .hero-left {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    padding: 6rem 3rem 6rem 4rem;
-    position: relative;
-  }
-
-  .hero-tag {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--green);
-    margin-bottom: 1.75rem;
+  @media (max-width:720px){
+    nav.links{ display:none; }
   }
 
-  .hero-tag::before {
-    content: '';
-    width: 24px; height: 1.5px;
-    background: var(--green);
+  /* ---------- Hero ---------- */
+  .hero{
+    padding:88px 0 0 0;
+  }
+  .hero h1{
+    font-size:clamp(40px,6vw,64px);
+    line-height:1.04;
+    margin:0 0 6px 0;
+    font-weight:700;
+    letter-spacing:-0.01em;
+  }
+  .hero .role{
+    font-size:18px;
+    color:var(--text-muted);
+    margin:0 0 34px 0;
+    font-weight:500;
+  }
+  .hero .pitch{
+    max-width:640px;
+    font-size:19px;
+    line-height:1.6;
+    color:var(--text);
+    margin:0 0 34px 0;
+  }
+  .hero .pitch em{
+    color:var(--accent);
+    font-style:normal;
+  }
+  .hero-actions{
+    display:flex;
+    flex-wrap:wrap;
+    gap:14px;
+    margin-bottom:56px;
+    font-size:14px;
+  }
+  .hero-actions a{
+    text-decoration:none;
+    padding:11px 18px;
+    border-radius:2px;
+    border:1px solid var(--line-strong);
+    color:var(--text);
+    transition:border-color .15s ease, background .15s ease;
+  }
+  .hero-actions a.primary{
+    background:var(--accent);
+    border-color:var(--accent);
+    color:#151109;
+    font-weight:600;
+  }
+  .hero-actions a.primary:hover{ background:#e8b458; }
+  .hero-actions a:not(.primary):hover{ border-color:var(--accent); }
+
+  /* KPI ledger row */
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .kpi{
+    padding:22px 24px 24px 0;
+    border-right:1px solid var(--line);
+  }
+  .kpi:last-child{ border-right:none; }
+  .kpi .value{
+    font-size:26px;
+    font-weight:700;
+    color:var(--accent);
+    margin-bottom:6px;
+    letter-spacing:-0.01em;
+  }
+  .kpi .label{
+    font-size:13px;
+    color:var(--text-muted);
+    line-height:1.4;
+  }
+  @media (max-width:720px){
+    .kpi-row{ grid-template-columns:repeat(2,1fr); }
+    .kpi:nth-child(2){ border-right:none; }
+    .kpi{ padding:20px 16px 20px 0; border-bottom:1px solid var(--line); }
+    .kpi:nth-child(1), .kpi:nth-child(2){ border-bottom:1px solid var(--line); }
   }
 
-  .hero-name {
-    font-family: var(--serif);
-    font-size: clamp(2.6rem, 4.5vw, 3.8rem);
-    line-height: 1.08;
-    letter-spacing: -0.025em;
-    color: var(--black);
-    margin-bottom: 0.5rem;
+  /* ---------- Section shell ---------- */
+  section{ padding:88px 0; }
+  section.alt{ background:var(--panel); }
+  .section-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:40px;
+    border-bottom:1px solid var(--line);
+    padding-bottom:18px;
+  }
+  .section-head h2{
+    font-size:28px;
+    margin:0;
+    font-weight:700;
+  }
+  .section-head .tag{
+    font-size:13px;
+    color:var(--text-muted);
   }
 
-  .hero-name em {
-    font-style: italic;
-    color: var(--green);
+  /* ---------- Summary ---------- */
+  .summary p{
+    max-width:660px;
+    font-size:18px;
+    color:var(--text);
+  }
+  .summary p + p{ margin-top:18px; }
+
+  /* ---------- Experience: Campaign Log ---------- */
+  .log{
+    position:relative;
+    border-left:1px solid var(--line-strong);
+    padding-left:36px;
+  }
+  .role{
+    position:relative;
+    padding-bottom:56px;
+  }
+  .role:last-child{ padding-bottom:0; }
+  .role::before{
+    content:"";
+    position:absolute;
+    left:-41px;
+    top:6px;
+    width:9px;
+    height:9px;
+    border-radius:50%;
+    background:var(--accent);
+    border:2px solid var(--bg);
+    outline:1px solid var(--accent);
+  }
+  .role-head{
+    display:flex;
+    flex-wrap:wrap;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:8px 24px;
+    margin-bottom:4px;
+  }
+  .role-title{
+    font-size:19px;
+    font-weight:600;
+  }
+  .role-dates{
+    font-size:14px;
+    color:var(--accent);
+    white-space:nowrap;
+  }
+  .role-org{
+    font-size:14px;
+    color:var(--text-muted);
+    margin-bottom:18px;
+  }
+  .role ul{
+    margin:0;
+    padding:0;
+    list-style:none;
+    max-width:680px;
+  }
+  .role li{
+    position:relative;
+    padding-left:18px;
+    margin-bottom:11px;
+    font-size:15.5px;
+    color:var(--text);
+  }
+  .role li::before{
+    content:"–";
+    position:absolute;
+    left:0;
+    color:var(--text-muted);
   }
 
-  .hero-role {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--gray-500);
-    margin-bottom: 1.75rem;
-    letter-spacing: 0.01em;
+  /* ---------- Skills ledger ---------- */
+  .skills-table{
+    display:grid;
+    grid-template-columns:220px 1fr;
+    border-top:1px solid var(--line);
+  }
+  .skill-row{
+    display:contents;
+  }
+  .skill-cat, .skill-items{
+    padding:20px 0;
+    border-bottom:1px solid var(--line);
+  }
+  .skill-cat{
+    font-size:14px;
+    font-weight:600;
+    color:var(--text-muted);
+    padding-right:24px;
+  }
+  .skill-items{
+    font-size:15px;
+    color:var(--text);
+  }
+  @media (max-width:720px){
+    .skills-table{ grid-template-columns:1fr; }
+    .skill-cat{ padding-bottom:6px; border-bottom:none; }
+    .skill-items{ padding-top:0; }
   }
 
-  .hero-desc {
-    font-size: 1rem;
-    color: var(--gray-500);
-    max-width: 500px;
-    margin-bottom: 2.5rem;
-    line-height: 1.8;
+  /* ---------- Education ---------- */
+  .edu-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:32px;
+  }
+  .edu-item{
+    border-top:2px solid var(--accent);
+    padding-top:16px;
+  }
+  .edu-item h3{
+    font-size:17px;
+    margin:0 0 4px 0;
+    font-weight:600;
+  }
+  .edu-item .school{
+    font-size:14.5px;
+    color:var(--text);
+    margin-bottom:4px;
+  }
+  .edu-item .dates{
+    font-size:13px;
+    color:var(--text-muted);
+  }
+  @media (max-width:600px){
+    .edu-grid{ grid-template-columns:1fr; }
   }
 
-  .hero-desc strong { color: var(--black); font-weight: 500; }
-
-  .hero-cta { display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 3rem; }
-
-  .btn-primary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: var(--green);
-    color: var(--white);
-    padding: 0.9rem 2rem;
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    text-decoration: none;
-    transition: background 0.2s, transform 0.15s;
-    letter-spacing: 0.02em;
+  /* ---------- Footer / Contact ---------- */
+  footer.contact{
+    background:var(--panel-2);
+    padding:80px 0 48px 0;
+    border-top:1px solid var(--line);
   }
-  .btn-primary:hover { background: var(--green-mid); transform: translateY(-1px); }
-
-  .btn-secondary {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    background: transparent;
-    color: var(--black);
-    padding: 0.9rem 2rem;
-    border: 1.5px solid var(--gray-300);
-    border-radius: 0.25rem;
-    font-size: 0.875rem;
-    font-weight: 400;
-    text-decoration: none;
-    transition: border-color 0.2s, transform 0.15s;
+  footer.contact h2{
+    font-size:clamp(28px,4vw,38px);
+    max-width:560px;
+    margin:0 0 28px 0;
+    font-weight:700;
+    line-height:1.2;
   }
-  .btn-secondary:hover { border-color: var(--black); transform: translateY(-1px); }
-
-  .hero-badges { display: flex; flex-wrap: wrap; gap: 0.6rem; }
-
-  .badge {
-    font-size: 0.72rem;
-    font-weight: 500;
-    color: var(--green);
-    background: var(--green-light);
-    border: 1px solid rgba(26,92,58,0.15);
-    padding: 0.3rem 0.75rem;
-    border-radius: 2rem;
-    letter-spacing: 0.03em;
+  .contact-links{
+    display:flex;
+    flex-wrap:wrap;
+    gap:28px;
+    margin-bottom:56px;
+  }
+  .contact-links a{
+    text-decoration:none;
+    font-size:15px;
+    border-bottom:1px solid var(--line-strong);
+    padding-bottom:3px;
+    transition:border-color .15s ease, color .15s ease;
+  }
+  .contact-links a:hover, .contact-links a:focus-visible{
+    color:var(--accent);
+    border-color:var(--accent);
+  }
+  .foot-meta{
+    display:flex;
+    justify-content:space-between;
+    flex-wrap:wrap;
+    gap:8px;
+    font-size:13px;
+    color:var(--text-muted);
+    border-top:1px solid var(--line);
+    padding-top:24px;
   }
 
-  .hero-right {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 3rem;
-    position: relative;
+  /* focus visibility */
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
   }
 
-  .stats-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    width: 100%;
-    max-width: 320px;
+  /* one orchestrated entrance on load */
+  .hero h1, .hero .role, .hero .pitch, .hero-actions{
+    opacity:0;
+    transform:translateY(10px);
+    animation:rise .6s ease forwards;
   }
-
-  .stat-card {
-    background: var(--white);
-    border: 1px solid var(--gray-100);
-    border-radius: 1rem;
-    padding: 1.5rem 1.75rem;
-    display: flex;
-    align-items: center;
-    gap: 1.25rem;
-    transition: transform 0.2s, box-shadow 0.2s;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-  }
-  .stat-card:hover { transform: translateX(4px); box-shadow: 0 4px 16px rgba(0,0,0,0.08); }
-
-  .stat-icon {
-    width: 44px; height: 44px; flex-shrink: 0;
-    background: var(--green-light);
-    border-radius: 0.75rem;
-    display: flex; align-items: center; justify-content: center;
-  }
-  .stat-icon svg { width: 20px; height: 20px; stroke: var(--green); fill: none; stroke-width: 1.8; }
-
-  .stat-value {
-    font-family: var(--serif);
-    font-size: 1.8rem;
-    color: var(--black);
-    line-height: 1;
-    margin-bottom: 0.2rem;
-  }
-  .stat-value span { color: var(--green); }
-
-  .stat-label {
-    font-size: 0.78rem;
-    color: var(--gray-500);
-    letter-spacing: 0.03em;
-  }
-
-  /* SECTIONS */
-  section { padding: 6rem 4rem; }
-
-  .section-label {
-    display: inline-flex; align-items: center; gap: 0.5rem;
-    font-size: 0.72rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    color: var(--green);
-    margin-bottom: 1rem;
-  }
-  .section-label::before {
-    content: '';
-    width: 20px; height: 1.5px;
-    background: var(--green);
-  }
-
-  .section-title {
-    font-family: var(--serif);
-    font-size: clamp(1.8rem, 3vw, 2.6rem);
-    line-height: 1.12;
-    letter-spacing: -0.02em;
-    color: var(--black);
-    margin-bottom: 1rem;
-  }
-
-  .section-sub {
-    font-size: 0.95rem;
-    color: var(--gray-500);
-    max-width: 500px;
-    margin-bottom: 3.5rem;
-    line-height: 1.75;
-  }
-
-  /* SKILLS */
-  #skills { background: var(--black); }
-  #skills .section-label { color: #4ade80; }
-  #skills .section-label::before { background: #4ade80; }
-  #skills .section-title { color: var(--white); }
-  #skills .section-sub { color: var(--gray-300); }
-
-  .skills-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 1px;
-    background: #1a1a15;
-    border: 1px solid #1a1a15;
-    border-radius: 1rem;
-    overflow: hidden;
-  }
-
-  .skill-item {
-    background: #0d0d09;
-    padding: 2rem;
-    transition: background 0.25s;
-    position: relative;
-  }
-  .skill-item:hover { background: #141410; }
-
-  .skill-num {
-    font-family: var(--serif);
-    font-size: 0.75rem;
-    color: #2a2a22;
-    margin-bottom: 1.25rem;
-    font-style: italic;
-  }
-
-  .skill-name {
-    font-size: 0.95rem;
-    font-weight: 600;
-    color: var(--white);
-    margin-bottom: 0.6rem;
-    letter-spacing: -0.01em;
-  }
-
-  .skill-desc {
-    font-size: 0.8rem;
-    color: var(--gray-300);
-    line-height: 1.65;
-    margin-bottom: 1.25rem;
-  }
-
-  .skill-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; }
-  .skill-tag {
-    font-size: 0.68rem;
-    color: #4ade80;
-    background: rgba(74,222,128,0.08);
-    border: 1px solid rgba(74,222,128,0.15);
-    padding: 0.2rem 0.55rem;
-    border-radius: 0.25rem;
-    letter-spacing: 0.03em;
-    font-weight: 500;
-  }
-
-  /* SERVICES */
-  #services { background: var(--cream); }
-
-  .services-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1.25rem;
-  }
-
-  .service-card {
-    background: var(--white);
-    border: 1px solid var(--gray-100);
-    border-radius: 1rem;
-    padding: 2rem;
-    position: relative;
-    overflow: hidden;
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .service-card:hover { transform: translateY(-4px); box-shadow: 0 12px 32px rgba(0,0,0,0.08); }
-
-  .service-number {
-    font-family: var(--serif);
-    font-size: 3rem;
-    color: var(--gray-100);
-    line-height: 1;
-    margin-bottom: 1rem;
-    font-style: italic;
-  }
-
-  .service-name {
-    font-size: 1rem;
-    font-weight: 600;
-    color: var(--black);
-    margin-bottom: 0.6rem;
-    letter-spacing: -0.01em;
-  }
-
-  .service-price {
-    font-family: var(--serif);
-    font-size: 1.4rem;
-    color: var(--green);
-    margin-bottom: 0.75rem;
-  }
-
-  .service-desc {
-    font-size: 0.85rem;
-    color: var(--gray-500);
-    line-height: 1.7;
-    margin-bottom: 1.25rem;
-  }
-
-  .service-list { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
-  .service-list li {
-    font-size: 0.8rem;
-    color: var(--gray-700);
-    display: flex; align-items: flex-start; gap: 0.5rem;
-  }
-  .service-list li::before { content: '→'; color: var(--green); flex-shrink: 0; }
-
-  /* CASE STUDIES */
-  #cases { background: var(--white); }
-
-  .cases-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 1.5rem;
-  }
-
-  .case-card {
-    border: 1px solid var(--gray-100);
-    border-radius: 1rem;
-    padding: 2.5rem;
-    background: var(--white);
-    transition: border-color 0.2s, transform 0.2s;
-    position: relative;
-    overflow: hidden;
-  }
-  .case-card:hover { border-color: var(--green); transform: translateY(-2px); }
-
-  .case-card::after {
-    content: '';
-    position: absolute; top: 0; left: 0;
-    width: 3px; height: 100%;
-    background: var(--green);
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: transform 0.3s;
-  }
-  .case-card:hover::after { transform: scaleY(1); }
-
-  .case-brand {
-    font-size: 0.7rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--gray-300);
-    margin-bottom: 0.6rem;
-  }
-
-  .case-title {
-    font-family: var(--serif);
-    font-size: 1.25rem;
-    color: var(--black);
-    line-height: 1.2;
-    margin-bottom: 1rem;
-  }
-
-  .case-desc {
-    font-size: 0.85rem;
-    color: var(--gray-500);
-    line-height: 1.75;
-    margin-bottom: 1.5rem;
-  }
-
-  .case-metrics {
-    display: flex; gap: 1.5rem;
-    padding-top: 1.25rem;
-    border-top: 1px solid var(--gray-100);
-    margin-bottom: 1.25rem;
-  }
-
-  .metric-value {
-    font-family: var(--serif);
-    font-size: 1.6rem;
-    color: var(--black);
-    line-height: 1;
-    margin-bottom: 0.2rem;
-  }
-  .metric-label {
-    font-size: 0.7rem;
-    color: var(--gray-300);
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-  }
-
-  .case-tech { display: flex; flex-wrap: wrap; gap: 0.4rem; }
-  .tech-badge {
-    font-size: 0.7rem;
-    color: var(--green);
-    background: var(--green-light);
-    padding: 0.2rem 0.6rem;
-    border-radius: 0.25rem;
-    font-weight: 500;
-  }
-
-  /* CONTACT */
-  #contact { background: var(--cream); }
-
-  .contact-wrap {
-    display: grid;
-    grid-template-columns: 1fr 1.2fr;
-    gap: 5rem;
-    align-items: start;
-  }
-
-  .contact-intro {
-    font-family: var(--serif);
-    font-size: 1.4rem;
-    color: var(--black);
-    line-height: 1.4;
-    margin-bottom: 1.25rem;
-    font-style: italic;
-  }
-
-  .contact-body {
-    font-size: 0.9rem;
-    color: var(--gray-500);
-    line-height: 1.75;
-    margin-bottom: 2rem;
-  }
-
-  .contact-links { display: flex; flex-direction: column; gap: 0.75rem; }
-
-  .contact-link {
-    display: flex; align-items: center; gap: 0.75rem;
-    text-decoration: none;
-    color: var(--gray-500);
-    font-size: 0.875rem;
-    transition: color 0.2s;
-    padding: 0.75rem;
-    border-radius: 0.5rem;
-    border: 1px solid transparent;
-    transition: all 0.2s;
-  }
-  .contact-link:hover { color: var(--black); border-color: var(--gray-100); background: var(--white); }
-
-  .link-icon {
-    width: 36px; height: 36px;
-    background: var(--white);
-    border: 1px solid var(--gray-100);
-    border-radius: 0.5rem;
-    display: flex; align-items: center; justify-content: center;
-    flex-shrink: 0;
-  }
-  .link-icon svg { width: 16px; height: 16px; stroke: var(--gray-500); fill: none; stroke-width: 1.8; }
-
-  .contact-form {
-    display: flex; flex-direction: column; gap: 1rem;
-  }
-
-  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
-
-  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
-
-  .form-group label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: var(--gray-700);
-    text-transform: uppercase;
-    letter-spacing: 0.07em;
-  }
-
-  .form-group input,
-  .form-group textarea,
-  .form-group select {
-    background: var(--white);
-    border: 1px solid var(--gray-100);
-    border-radius: 0.5rem;
-    padding: 0.8rem 1rem;
-    font-family: var(--sans);
-    font-size: 0.9rem;
-    color: var(--black);
-    outline: none;
-    transition: border-color 0.2s;
-    font-weight: 300;
-  }
-  .form-group input:focus,
-  .form-group textarea:focus,
-  .form-group select:focus { border-color: var(--green); }
-
-  .form-group textarea { min-height: 110px; resize: vertical; }
-
-  /* FOOTER */
-  footer {
-    padding: 2rem 4rem;
-    border-top: 1px solid var(--gray-100);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    font-size: 0.8rem;
-    color: var(--gray-300);
-    background: var(--white);
-  }
-  footer a { color: var(--gray-300); text-decoration: none; transition: color 0.2s; }
-  footer a:hover { color: var(--black); }
-
-  /* ANIMATIONS */
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  .fade-up { opacity: 0; animation: fadeUp 0.65s ease forwards; }
-  .d1 { animation-delay: 0.05s; }
-  .d2 { animation-delay: 0.15s; }
-  .d3 { animation-delay: 0.25s; }
-  .d4 { animation-delay: 0.35s; }
-  .d5 { animation-delay: 0.45s; }
-
-  /* RESPONSIVE */
-  @media (max-width: 900px) {
-    nav { padding: 1rem 1.5rem; }
-    .nav-links { display: none; }
-    #hero { grid-template-columns: 1fr; }
-    .hero-left { padding: 5rem 1.5rem 2rem; }
-    .hero-right { padding: 2rem 1.5rem 4rem; }
-    .stats-stack { max-width: 100%; }
-    section { padding: 4rem 1.5rem; }
-    .skills-grid { grid-template-columns: 1fr 1fr; }
-    .cases-grid { grid-template-columns: 1fr; }
-    .contact-wrap { grid-template-columns: 1fr; gap: 3rem; }
-    .form-row { grid-template-columns: 1fr; }
-    footer { flex-direction: column; gap: 0.75rem; text-align: center; padding: 1.5rem; }
-  }
-
-  @media (max-width: 600px) {
-    .skills-grid { grid-template-columns: 1fr; }
+  .hero h1{ animation-delay:.05s; }
+  .hero .role{ animation-delay:.15s; }
+  .hero .pitch{ animation-delay:.25s; }
+  .hero-actions{ animation-delay:.35s; }
+  @keyframes rise{
+    to{ opacity:1; transform:translateY(0); }
   }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="#hero" class="nav-logo">goalblaze</a>
-  <ul class="nav-links">
-    <li><a href="#skills">Skills</a></li>
-    <li><a href="#services">Services</a></li>
-    <li><a href="#cases">Work</a></li>
-    <li><a href="#contact" class="nav-cta">Hire me</a></li>
-  </ul>
-</nav>
-
-<!-- HERO -->
-<section id="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-left">
-    <span class="hero-tag fade-up d1">Performance Marketer & MarTech Specialist</span>
-    <h1 class="hero-name fade-up d2">
-      I build campaigns<br>that <em>convert</em> —<br>and track every<br><em>rupee</em> spent.
-    </h1>
-    <p class="hero-role fade-up d3">Meta Ads · Google Ads · Conversion Tracking · WhatsApp Automation</p>
-    <p class="hero-desc fade-up d3">
-      2 years managing paid campaigns with budgets up to <strong>₹1L/month</strong>, delivering <strong>6x ROAS</strong> for D2C brands and <strong>₹70–90 CPL</strong> for B2B. I own both the technical stack and the strategy that runs on top of it.
-    </p>
-    <div class="hero-cta fade-up d4">
-      <a href="#contact" class="btn-primary">Work with me →</a>
-      <a href="#cases" class="btn-secondary">See results</a>
-    </div>
-    <div class="hero-badges fade-up d5">
-      <span class="badge">Meta Pixel + CAPI</span>
-      <span class="badge">GTM + GA4</span>
-      <span class="badge">WhatsApp Cloud API</span>
-      <span class="badge">Odoo CRM</span>
-      <span class="badge">6x ROAS Delivered</span>
-    </div>
+<header class="site">
+  <div class="nav-inner">
+    <div class="nav-mark">Chandrakant Salgar</div>
+    <nav class="links">
+      <a href="#summary">Summary</a>
+      <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
+      <a href="#education">Education</a>
+    </nav>
+    <a class="nav-contact" href="mailto:salgarchandrakant4@gmail.com">Get in touch</a>
   </div>
+</header>
 
-  <div class="hero-right">
-    <div class="stats-stack">
-      <div class="stat-card fade-up d2">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-        </div>
-        <div>
-          <div class="stat-value">6<span>x</span></div>
-          <div class="stat-label">ROAS delivered for D2C brand</div>
-        </div>
-      </div>
-      <div class="stat-card fade-up d3">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-        </div>
-        <div>
-          <div class="stat-value">₹<span>70–90</span></div>
-          <div class="stat-label">CPL achieved for B2B campaigns</div>
-        </div>
-      </div>
-      <div class="stat-card fade-up d4">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        </div>
-        <div>
-          <div class="stat-value">2<span>+</span></div>
-          <div class="stat-label">Years hands-on experience</div>
-        </div>
-      </div>
-      <div class="stat-card fade-up d5">
-        <div class="stat-icon">
-          <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
-        </div>
-        <div>
-          <div class="stat-value">₹1<span>L+</span></div>
-          <div class="stat-label">Monthly ad budget managed</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+<main class="wrap">
 
-<!-- SKILLS -->
-<section id="skills">
-  <div class="section-label">Expertise</div>
-  <h2 class="section-title" style="color:var(--white)">Full-stack marketing<br><em style="font-style:italic;color:#4ade80">from ads to attribution.</em></h2>
-  <p class="section-sub">Most marketers do one thing. I manage campaigns, build the tracking infrastructure, and automate the follow-up — all in one.</p>
-
-  <div class="skills-grid">
-    <div class="skill-item">
-      <div class="skill-num">01</div>
-      <div class="skill-name">Meta Ads</div>
-      <div class="skill-desc">Lead gen, sales, awareness, and Advantage+ campaigns. Full-funnel strategy from TOFU to BOFU with conditional logic in lead forms to qualify at capture.</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Lead Gen</span>
-        <span class="skill-tag">Sales</span>
-        <span class="skill-tag">Advantage+</span>
-        <span class="skill-tag">Retargeting</span>
-      </div>
+  <section class="hero" id="top">
+    <h1>Chandrakant Salgar</h1>
+    <p class="role">Performance Marketing Specialist — Pune, India</p>
+    <p class="pitch">I run Meta and Google Ads programs end to end, and I build the tracking infrastructure — <em>GTM, GA4, Pixel, CAPI</em> — that makes their numbers worth trusting.</p>
+    <div class="hero-actions">
+      <a class="primary" href="mailto:salgarchandrakant4@gmail.com">Email me</a>
+      <a href="tel:+917030730440">+91 70307 30440</a>
+      <a href="#" target="_blank" rel="noopener">LinkedIn</a>
     </div>
 
-    <div class="skill-item">
-      <div class="skill-num">02</div>
-      <div class="skill-name">Google Ads</div>
-      <div class="skill-desc">Search, Performance Max, Shopping, and Demand Gen campaigns. Multi-property management under MCC for multiple business units.</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Search</span>
-        <span class="skill-tag">PMAX</span>
-        <span class="skill-tag">Shopping</span>
-        <span class="skill-tag">Demand Gen</span>
+    <div class="kpi-row">
+      <div class="kpi">
+        <div class="value">2.8 yrs</div>
+        <div class="label">Running paid campaigns across Meta and Google Ads</div>
+      </div>
+      <div class="kpi">
+        <div class="value">₹1L+/mo</div>
+        <div class="label">Peak monthly budgets managed per account</div>
+      </div>
+      <div class="kpi">
+        <div class="value">4-tool</div>
+        <div class="label">Tracking stacks built: GTM, GA4, Pixel, CAPI</div>
+      </div>
+      <div class="kpi">
+        <div class="value">3</div>
+        <div class="label">Industries: B2B/e-commerce, D2C, agency</div>
       </div>
     </div>
+  </section>
 
-    <div class="skill-item">
-      <div class="skill-num">03</div>
-      <div class="skill-name">Conversion Tracking</div>
-      <div class="skill-desc">End-to-end tracking infrastructure — browser-side and server-side — ensuring clean attribution and minimal data loss across the funnel.</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Meta Pixel</span>
-        <span class="skill-tag">CAPI</span>
-        <span class="skill-tag">GTM</span>
-        <span class="skill-tag">GA4</span>
-      </div>
+  <section id="summary">
+    <div class="section-head">
+      <h2>Summary</h2>
+      <span class="tag">What I do</span>
+    </div>
+    <div class="summary">
+      <p>Most of my work sits at the seam between ad platforms and the systems around them — CRM, WhatsApp, reporting. I set up campaign structure and targeting across Meta and Google Ads, then close the tracking gaps that make platform data trustworthy enough to act on.</p>
+      <p>I've worked B2B lead generation funnels down to the SQL handoff, D2C remarketing and retention flows, and the automation that connects lead forms to CRM in real time. I use AI tools — including Claude's MCP-based workflows — to speed up reporting and analysis rather than replace the judgment behind it.</p>
+    </div>
+  </section>
+
+  <section class="alt" id="experience">
+    <div class="section-head">
+      <h2>Experience</h2>
+      <span class="tag">Campaign log</span>
     </div>
 
-    <div class="skill-item">
-      <div class="skill-num">04</div>
-      <div class="skill-name">WhatsApp Automation</div>
-      <div class="skill-desc">Meta Cloud API integration with Odoo CRM. Abandoned cart recovery, checkout recovery, post-purchase follow-up, and broadcast campaigns.</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Cloud API</span>
-        <span class="skill-tag">Odoo 19</span>
-        <span class="skill-tag">Zapier</span>
-        <span class="skill-tag">Automation</span>
-      </div>
-    </div>
+    <div class="log">
 
-    <div class="skill-item">
-      <div class="skill-num">05</div>
-      <div class="skill-name">Remarketing & Funnels</div>
-      <div class="skill-desc">Remarketing ecosystems targeting abandoned cart users, past customers, and lookalike audiences — maximizing return on existing traffic.</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Lookalike</span>
-        <span class="skill-tag">Custom Audiences</span>
-        <span class="skill-tag">Funnel Optimization</span>
-      </div>
-    </div>
-
-    <div class="skill-item">
-      <div class="skill-num">06</div>
-      <div class="skill-name">MarTech Stack</div>
-      <div class="skill-desc">CRM integration, webhook configuration, lead syncing from Meta Ads to Odoo via Zapier, and Shopify/WordPress tracking setup.</div>
-      <div class="skill-tags">
-        <span class="skill-tag">Odoo CRM</span>
-        <span class="skill-tag">Shopify</span>
-        <span class="skill-tag">WordPress</span>
-        <span class="skill-tag">Webhook</span>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- SERVICES -->
-<section id="services">
-  <div class="section-label">Services</div>
-  <h2 class="section-title">What I can do<br>for your business.</h2>
-  <p class="section-sub">Fixed-scope packages. You know exactly what you're getting and what it costs.</p>
-
-  <div class="services-grid">
-    <div class="service-card">
-      <div class="service-number">01</div>
-      <div class="service-name">Meta Ads Management</div>
-      <div class="service-price">₹15–25k<span style="font-size:0.9rem;color:var(--gray-300)">/mo</span></div>
-      <div class="service-desc">Full campaign management — strategy, creative briefing, audience setup, optimization, and reporting.</div>
-      <ul class="service-list">
-        <li>Lead gen, sales & awareness campaigns</li>
-        <li>Full-funnel audience strategy</li>
-        <li>A/B testing & optimization</li>
-        <li>Weekly performance reporting</li>
-        <li>Meta Pixel + CAPI verification</li>
-      </ul>
-    </div>
-
-    <div class="service-card">
-      <div class="service-number">02</div>
-      <div class="service-name">Conversion Tracking Setup</div>
-      <div class="service-price">₹12–20k</div>
-      <div class="service-desc">Complete tracking infrastructure — browser-side and server-side — built from scratch and verified end-to-end.</div>
-      <ul class="service-list">
-        <li>Meta Pixel + CAPI installation</li>
-        <li>GTM full container setup</li>
-        <li>GA4 event configuration</li>
-        <li>Google Ads conversion tracking</li>
-        <li>Data Layer implementation</li>
-      </ul>
-    </div>
-
-    <div class="service-card">
-      <div class="service-number">03</div>
-      <div class="service-name">Google Ads Management</div>
-      <div class="service-price">₹15–25k<span style="font-size:0.9rem;color:var(--gray-300)">/mo</span></div>
-      <div class="service-desc">Search, Shopping, PMAX and Demand Gen campaigns managed with proper conversion tracking and attribution.</div>
-      <ul class="service-list">
-        <li>Search & Shopping campaigns</li>
-        <li>Performance Max setup</li>
-        <li>Google Merchant Center</li>
-        <li>Conversion tracking setup</li>
-        <li>Monthly reporting</li>
-      </ul>
-    </div>
-
-    <div class="service-card">
-      <div class="service-number">04</div>
-      <div class="service-name">WhatsApp Automation</div>
-      <div class="service-price">₹15–25k</div>
-      <div class="service-desc">End-to-end WhatsApp Cloud API setup with automation flows that recover carts, nurture leads, and drive repeat purchases.</div>
-      <ul class="service-list">
-        <li>Meta Cloud API integration</li>
-        <li>Abandoned cart recovery flow</li>
-        <li>Post-purchase follow-up</li>
-        <li>CRM connectivity (Odoo/Zapier)</li>
-        <li>Broadcast campaign setup</li>
-      </ul>
-    </div>
-
-    <div class="service-card">
-      <div class="service-number">05</div>
-      <div class="service-name">Full MarTech Stack</div>
-      <div class="service-price">₹35–50k</div>
-      <div class="service-desc">Complete end-to-end marketing infrastructure — ads, tracking, CRM, and automation — built and verified from scratch.</div>
-      <ul class="service-list">
-        <li>Meta + Google Ads setup</li>
-        <li>Pixel + CAPI + GTM + GA4</li>
-        <li>WhatsApp automation flows</li>
-        <li>CRM integration & lead syncing</li>
-        <li>Looker Studio dashboard</li>
-      </ul>
-    </div>
-
-    <div class="service-card">
-      <div class="service-number">06</div>
-      <div class="service-name">Ad Account Audit</div>
-      <div class="service-price">₹5–8k</div>
-      <div class="service-desc">Deep audit of your Meta or Google Ads account — tracking gaps, audience issues, budget waste — with a prioritized fix plan.</div>
-      <ul class="service-list">
-        <li>Tracking & attribution audit</li>
-        <li>Audience & campaign structure</li>
-        <li>Budget efficiency analysis</li>
-        <li>Creative performance review</li>
-        <li>Detailed recommendations report</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- CASE STUDIES -->
-<section id="cases">
-  <div class="section-label">Case Studies</div>
-  <h2 class="section-title">Real work,<br>real results.</h2>
-  <p class="section-sub">Projects where I owned both the technical setup and the campaign strategy.</p>
-
-  <div class="cases-grid">
-    <div class="case-card">
-      <div class="case-brand">Anutilam · D2C E-commerce</div>
-      <div class="case-title">From 5 orders/month to 100–150 orders/day</div>
-      <p class="case-desc">
-        Inherited a broken setup — no working Pixel, no attribution, poor creatives. Conducted a full audit, rebuilt Meta Pixel and CAPI from scratch, restructured campaigns with a phased awareness-to-sales approach, and built a full remarketing ecosystem with WhatsApp automation for cart recovery and post-purchase flows.
-      </p>
-      <div class="case-metrics">
-        <div>
-          <div class="metric-value">6x+</div>
-          <div class="metric-label">ROAS achieved</div>
+      <div class="role">
+        <div class="role-head">
+          <span class="role-title">Performance Marketing Specialist</span>
+          <span class="role-dates">May 2025 — Present</span>
         </div>
-        <div>
-          <div class="metric-value">₹1–1.5L</div>
-          <div class="metric-label">Monthly revenue</div>
-        </div>
-        <div>
-          <div class="metric-value">₹10–15k</div>
-          <div class="metric-label">Ad budget used</div>
-        </div>
+        <div class="role-org">Jagtap Horticulture Pvt Ltd</div>
+        <ul>
+          <li>Ran full-funnel Meta and Google Ads campaigns — Lead Generation, Sales, Awareness, Search, Performance Max, Demand Gen — across e-commerce and B2B accounts with monthly budgets up to ₹1L+.</li>
+          <li>Owned the B2B lead funnel end to end: audience segmentation, creative testing, and conditional lead-qualification logic in Meta forms, through to Sales Qualified Lead handoff.</li>
+          <li>Built the full conversion tracking stack — GTM, GA4, Meta Pixel, Meta CAPI — to keep attribution accurate and data loss minimal.</li>
+          <li>Connected Meta Lead Ads into Odoo CRM via Zapier for real-time lead routing, and built WhatsApp automation on Meta's Cloud API for structured follow-up.</li>
+          <li>Used Claude's MCP-based workflow to pull and summarize campaign data faster than manual reporting allowed.</li>
+        </ul>
       </div>
-      <div class="case-tech">
-        <span class="tech-badge">Meta Pixel</span>
-        <span class="tech-badge">CAPI</span>
-        <span class="tech-badge">WhatsApp Automation</span>
-        <span class="tech-badge">Lookalike Audiences</span>
-        <span class="tech-badge">Remarketing</span>
+
+      <div class="role">
+        <div class="role-head">
+          <span class="role-title">Performance Marketing Consultant</span>
+          <span class="role-dates">Jan 2024 — Apr 2025</span>
+        </div>
+        <div class="role-org">Anutilam — D2C Brand</div>
+        <ul>
+          <li>Audited a full ad account and website, closing gaps in conversion tracking, audience strategy, and campaign structure for a brand with low monthly order volume.</li>
+          <li>Ran a phased strategy — awareness campaigns to gather signal, then sales campaigns once tracking was verified — driving steady month-over-month order growth.</li>
+          <li>Built and maintained remarketing across abandoned-cart users, past customers, and lookalike audiences.</li>
+          <li>Set up WhatsApp automation for cart recovery, checkout recovery, and post-purchase follow-up.</li>
+        </ul>
+      </div>
+
+      <div class="role">
+        <div class="role-head">
+          <span class="role-title">Digital Marketing Intern</span>
+          <span class="role-dates">Sep 2023 — Dec 2023</span>
+        </div>
+        <div class="role-org">Glassberry IT Solutions</div>
+        <ul>
+          <li>Managed social accounts, tracked and reported on campaign performance, and ran keyword research.</li>
+          <li>Helped set up conversion tracking for a WordPress-based website.</li>
+        </ul>
+      </div>
+
+    </div>
+  </section>
+
+  <section id="skills">
+    <div class="section-head">
+      <h2>Skills &amp; Platforms</h2>
+      <span class="tag">Tooling</span>
+    </div>
+    <div class="skills-table">
+      <div class="skill-row">
+        <div class="skill-cat">Campaign Operations</div>
+        <div class="skill-items">Campaign setup &amp; trafficking, ad targeting, creative specification &amp; asset coordination, delivery monitoring &amp; troubleshooting, stakeholder coordination</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-cat">Platforms</div>
+        <div class="skill-items">Meta Ads (Awareness, Engagement, Sales, Leads, Advantage+), Google Ads (Search, Performance Max, Shopping, Demand Gen)</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-cat">Tracking &amp; Reporting</div>
+        <div class="skill-items">Google Tag Manager, GA4, Meta Pixel &amp; Conversions API, Excel, PowerPoint</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-cat">Automation &amp; CRM</div>
+        <div class="skill-items">WhatsApp Cloud API &amp; automation, lead automation (Meta Ads to Odoo via Zapier), Odoo CRM</div>
+      </div>
+      <div class="skill-row">
+        <div class="skill-cat">AI Tools</div>
+        <div class="skill-items">ChatGPT &amp; Gemini for analysis and creative ideation, Claude for MCP-based reporting workflows</div>
       </div>
     </div>
+  </section>
 
-    <div class="case-card">
-      <div class="case-brand">Jagtap Horticulture · B2B + E-commerce</div>
-      <div class="case-title">Full MarTech stack for a 700-product business</div>
-      <p class="case-desc">
-        Built complete paid media and tracking infrastructure across Meta and Google Ads for both e-commerce and B2B segments. Deployed GTM + GA4 + Meta Pixel + CAPI on an Odoo website, integrated WhatsApp Cloud API with Odoo CRM, connected Meta Lead Ads via Zapier, and ran B2B landscape development campaigns achieving ₹70–90 CPL.
-      </p>
-      <div class="case-metrics">
-        <div>
-          <div class="metric-value">₹70–90</div>
-          <div class="metric-label">CPL for B2B leads</div>
-        </div>
-        <div>
-          <div class="metric-value">₹1L+</div>
-          <div class="metric-label">Monthly budget managed</div>
-        </div>
-        <div>
-          <div class="metric-value">700+</div>
-          <div class="metric-label">Products tracked</div>
-        </div>
+  <section class="alt" id="education">
+    <div class="section-head">
+      <h2>Education</h2>
+      <span class="tag">Background</span>
+    </div>
+    <div class="edu-grid">
+      <div class="edu-item">
+        <h3>MBA, Marketing</h3>
+        <div class="school">DY Patil University, Pune</div>
+        <div class="dates">Jan 2024 — Apr 2026</div>
       </div>
-      <div class="case-tech">
-        <span class="tech-badge">GTM + GA4</span>
-        <span class="tech-badge">WhatsApp Cloud API</span>
-        <span class="tech-badge">Odoo 19</span>
-        <span class="tech-badge">Google Shopping</span>
-        <span class="tech-badge">Meta CAPI</span>
+      <div class="edu-item">
+        <h3>BA, Sociology</h3>
+        <div class="school">YCMOU</div>
+        <div class="dates">Jun 2016 — Jul 2019</div>
       </div>
     </div>
-  </div>
-</section>
+  </section>
 
-<!-- CONTACT -->
-<section id="contact">
-  <div class="contact-wrap">
-    <div>
-      <div class="section-label">Get in touch</div>
-      <div class="contact-intro">"Let's talk about what you're trying to grow."</div>
-      <p class="contact-body">Whether it's broken tracking, campaigns spending without results, or building your WhatsApp automation from zero — I can help diagnose and fix it fast.</p>
+</main>
 
-      <div class="contact-links">
-        <a href="mailto:salgarchandrakant4@gmail.com" class="contact-link">
-          <div class="link-icon">
-            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
-          </div>
-          salgarchandrakant4@gmail.com
-        </a>
-        <a href="https://wa.me/917030730440" target="_blank" class="contact-link">
-          <div class="link-icon">
-            <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
-          </div>
-          +91 70307 30440
-        </a>
-        <a href="https://www.linkedin.com/in/chandrakant-salgar" target="_blank" class="contact-link">
-          <div class="link-icon">
-            <svg viewBox="0 0 24 24"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
-          </div>
-          linkedin.com/in/chandrakant-salgar
-        </a>
-        <a href="https://goalblaze.in" target="_blank" class="contact-link">
-          <div class="link-icon">
-            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
-          </div>
-          goalblaze.in
-        </a>
-      </div>
+<footer class="contact" id="contact">
+  <div class="wrap">
+    <h2>Open to performance marketing roles — remote or Pune-based.</h2>
+    <div class="contact-links">
+      <a href="mailto:salgarchandrakant4@gmail.com">salgarchandrakant4@gmail.com</a>
+      <a href="tel:+917030730440">+91 70307 30440</a>
+      <a href="#" target="_blank" rel="noopener">LinkedIn profile</a>
     </div>
-
-    <form class="contact-form" action="https://formspree.io/f/mnjlvkdp" method="POST">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Your name</label>
-          <input type="text" name="name" placeholder="Your Name">
-        </div>
-        <div class="form-group">
-          <label>Phone</label>
-          <input type="tel" name="phone" placeholder="Your Number">
-        </div>
-      </div>
-      <div class="form-group">
-        <label>Email address</label>
-        <input type="email" name="email" placeholder="Your Email">
-      </div>
-      <div class="form-group">
-        <label>What do you need?</label>
-        <select name="service">
-          <option value="">Select a service...</option>
-          <option>Meta Ads Management (₹15–25k/mo)</option>
-          <option>Conversion Tracking Setup (₹12–20k)</option>
-          <option>Google Ads Management (₹15–25k/mo)</option>
-          <option>WhatsApp Automation (₹15–25k)</option>
-          <option>Full MarTech Stack (₹35–50k)</option>
-          <option>Ad Account Audit (₹5–8k)</option>
-          <option>Something else</option>
-        </select>
-      </div>
-      <div class="form-group">
-        <label>Tell me about your situation</label>
-        <textarea name="message" placeholder="What's broken? What are you trying to achieve? Any context about your business helps."></textarea>
-      </div>
-      <button type="submit" class="btn-primary" style="align-self:flex-start;">Send message →</button>
-    </form>
-  </div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  <span>© 2026 goalblaze · Pune </span>
-  <div style="display:flex;gap:1.5rem;">
-    <a href="#hero">Top</a>
-    <a href="mailto:salgarchandrakant4@gmail.com">Email</a>
-    <a href="https://www.linkedin.com/in/chandrakant-salgar" target="_blank">LinkedIn</a>
+    <div class="foot-meta">
+      <span>Pune, Maharashtra, India</span>
+      <span>Chandrakant Salgar</span>
+    </div>
   </div>
 </footer>
 
-<!-- WhatsApp Float -->
-<a href="https://wa.me/917030730440" target="_blank" style="position:fixed;bottom:30px;right:30px;width:56px;height:56px;background:#25d366;border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.2);z-index:999;transition:transform 0.2s;" onmouseover="this.style.transform='scale(1.1)'" onmouseout="this.style.transform='scale(1)'">
-  <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="white"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-</a>
-
-<script>
-  var form = document.querySelector('.contact-form');
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var data = new FormData(form);
-    fetch(form.action, {
-      method: 'POST',
-      body: data,
-      headers: { 'Accept': 'application/json' }
-    })
-    .then(function(response) {
-      if (response.ok) {
-        window.dataLayer = window.dataLayer || [];
-        window.dataLayer.push({
-          'event': 'form_submission',
-          'form_name': 'contact_form'
-        });
-        form.innerHTML = '<p style="color:#1a5c3a;font-size:1rem;padding:2rem 0;">✓ Message sent! I will get back to you within 24 hours.</p>';
-      }
-    })
-    .catch(function(error) {
-      alert('Something went wrong. Please email directly at salgarchandrakant4@gmail.com');
-    });
-  });
-</script>
-<!-- ========== GOALBLAZE AI CHATBOT ========== -->
-<style>
-  #gb-launcher {
-    position: fixed; bottom: 24px; left: 24px; width: 56px; height: 56px;
-    background: #1a5c3a; border-radius: 50%; cursor: pointer; display: flex;
-    align-items: center; justify-content: center; box-shadow: 0 4px 20px rgba(26,92,58,0.5);
-    transition: transform .2s, box-shadow .2s; z-index: 9999;
-  }
-  #gb-launcher:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(26,92,58,0.7); }
-  #gb-launcher svg { width: 26px; height: 26px; fill: #fff; }
-  #gb-launcher .gb-close-icon { display: none; }
-  #gb-launcher.open .gb-chat-icon { display: none; }
-  #gb-launcher.open .gb-close-icon { display: block; }
-
-  #gb-window {
-    position: fixed; bottom: 92px; left: 24px; width: 360px; max-height: 540px;
-    background: #1a1a1a; border-radius: 16px; overflow: hidden;
-    box-shadow: 0 8px 40px rgba(0,0,0,0.6); display: none; flex-direction: column;
-    z-index: 9998; border: 1px solid #2a2a2a; animation: gbSlideUp .25s ease;
-  }
-  #gb-window.open { display: flex; }
-  @keyframes gbSlideUp { from { opacity:0; transform:translateY(16px); } to { opacity:1; transform:translateY(0); } }
-
-  .gb-header {
-    background: #111; padding: 14px 16px; display: flex; align-items: center; gap: 10px;
-    border-bottom: 1px solid #2a2a2a;
-  }
-  .gb-avatar {
-    width: 36px; height: 36px; background: #1a5c3a; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 700; color: #fff; font-size: 14px; flex-shrink: 0;
-  }
-  .gb-header-name { color: #fff; font-weight: 600; font-size: 14px; }
-  .gb-header-status { color: #22c55e; font-size: 11px; display: flex; align-items: center; gap: 4px; }
-  .gb-header-status::before { content:''; width:6px; height:6px; background:#22c55e; border-radius:50%; display:inline-block; }
-
-  #gb-messages {
-    flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px;
-    scrollbar-width: thin; scrollbar-color: #333 transparent;
-  }
-  #gb-messages::-webkit-scrollbar { width: 4px; }
-  #gb-messages::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
-
-  .gb-msg { max-width: 82%; display: flex; flex-direction: column; gap: 2px; }
-  .gb-msg.bot { align-self: flex-start; }
-  .gb-msg.user { align-self: flex-end; }
-  .gb-bubble { padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; word-break: break-word; }
-  .gb-msg.bot .gb-bubble { background: #252525; color: #e5e5e5; border-bottom-left-radius: 4px; }
-  .gb-msg.user .gb-bubble { background: #1a5c3a; color: #fff; border-bottom-right-radius: 4px; }
-
-  .gb-typing { display: flex; align-items: center; gap: 4px; padding: 10px 13px; background: #252525; border-radius: 14px; border-bottom-left-radius: 4px; width: fit-content; }
-  .gb-dot { width: 6px; height: 6px; background: #888; border-radius: 50%; animation: gbBounce .9s infinite; }
-  .gb-dot:nth-child(2) { animation-delay: .2s; }
-  .gb-dot:nth-child(3) { animation-delay: .4s; }
-  @keyframes gbBounce { 0%,80%,100%{transform:translateY(0)} 40%{transform:translateY(-5px)} }
-
-  .gb-quick-replies { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-  .gb-qr {
-    background: transparent; border: 1px solid #1a5c3a; color: #4ade80;
-    padding: 5px 10px; border-radius: 20px; font-size: 12px; cursor: pointer;
-    transition: background .15s, color .15s; font-family: inherit;
-  }
-  .gb-qr:hover { background: #1a5c3a; color: #fff; }
-
-  .gb-lead-form { display: flex; flex-direction: column; gap: 8px; margin-top: 8px; }
-  .gb-lead-form input, .gb-lead-form textarea {
-    background: #2a2a2a; border: 1px solid #3a3a3a; border-radius: 8px;
-    color: #e5e5e5; padding: 8px 10px; font-size: 13px; outline: none; font-family: inherit;
-    transition: border-color .15s;
-  }
-  .gb-lead-form input:focus, .gb-lead-form textarea:focus { border-color: #1a5c3a; }
-  .gb-lead-form textarea { resize: none; height: 60px; }
-  .gb-lead-form button {
-    background: #1a5c3a; color: #fff; border: none; border-radius: 8px;
-    padding: 8px; font-size: 13px; font-weight: 600; cursor: pointer;
-    transition: background .15s; font-family: inherit;
-  }
-  .gb-lead-form button:hover { background: #247a4e; }
-
-  .gb-input-area {
-    display: flex; align-items: center; gap: 8px; padding: 12px 14px;
-    border-top: 1px solid #2a2a2a; background: #111;
-  }
-  #gb-input {
-    flex: 1; background: #252525; border: 1px solid #333; border-radius: 20px;
-    color: #e5e5e5; padding: 8px 14px; font-size: 13px; outline: none; font-family: inherit;
-    transition: border-color .15s;
-  }
-  #gb-input:focus { border-color: #1a5c3a; }
-  #gb-input::placeholder { color: #555; }
-  #gb-send {
-    width: 36px; height: 36px; background: #1a5c3a; border: none; border-radius: 50%;
-    cursor: pointer; display: flex; align-items: center; justify-content: center;
-    transition: background .15s; flex-shrink: 0;
-  }
-  #gb-send:hover { background: #247a4e; }
-  #gb-send svg { width: 16px; height: 16px; fill: #fff; }
-  .gb-brand { text-align: center; padding: 6px; font-size: 10px; color: #444; }
-  .gb-brand a { color: #4ade80; text-decoration: none; }
-</style>
-
-<!-- Launcher -->
-<div id="gb-launcher" onclick="gbToggle()">
-  <svg class="gb-chat-icon" viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z"/></svg>
-  <svg class="gb-close-icon" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
-</div>
-
-<!-- Chat Window -->
-<div id="gb-window">
-  <div class="gb-header">
-    <div class="gb-avatar">CK</div>
-    <div>
-      <div class="gb-header-name">GoalBlaze AI</div>
-      <div class="gb-header-status">Online now</div>
-    </div>
-  </div>
-  <div id="gb-messages"></div>
-  <div class="gb-input-area">
-    <input id="gb-input" type="text" placeholder="Ask me anything…" onkeydown="if(event.key==='Enter')gbSend()" />
-    <button id="gb-send" onclick="gbSend()">
-      <svg viewBox="0 0 24 24"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
-    </button>
-  </div>
-  <div class="gb-brand">Powered by <a href="https://goalblaze.in" target="_blank">GoalBlaze</a></div>
-</div>
-
-<script>
-(function () {
-  const WORKER_URL = 'https://goalblaze-proxy.goalblaze-in.workers.dev';
-
-  const GB_CONTEXT = `You are the AI assistant for GoalBlaze, Chandrakant Salgar's personal performance marketing and MarTech consultancy. Your job is to help website visitors understand GoalBlaze's services, answer questions about Chandrakant's expertise, and capture leads.
-
-ABOUT CHANDRAKANT / GOALBLAZE:
-- Full name: Chandrakant Salgar
-- Role: Performance Marketer & MarTech Specialist
-- Based in Pune, Maharashtra, India
-- 2+ years of hands-on experience
-- Managed monthly ad budgets up to ₹1L+
-- Delivered 6x+ ROAS for D2C brands
-- Achieved ₹70–90 CPL for B2B campaigns
-- MBA Marketing, DY Patil University (2024–2026)
-- Contact: salgarchandrakant4@gmail.com | +91 70307 30440 | linkedin.com/in/chandrakant-salgar | goalblaze.in
-
-SKILLS:
-- Meta Ads: Lead gen, sales, awareness, Advantage+ campaigns. Full-funnel strategy TOFU to BOFU with conditional logic in lead forms to qualify leads at point of capture.
-- Google Ads: Search, Performance Max, Shopping, Demand Gen. Multi-property MCC management.
-- Conversion Tracking: Meta Pixel + CAPI (browser-side + server-side), GTM, GA4, Google Ads conversion setup, Data Layer implementation.
-- WhatsApp Cloud API: End-to-end integration, automation flows, abandoned cart recovery, post-purchase follow-up, opt-out handling, Odoo 19 CRM connectivity, Zapier integration.
-- Remarketing & Funnels: Lookalike audiences, custom audiences, abandoned cart targeting, remarketing ecosystems.
-- MarTech Stack: Odoo CRM, Shopify, WordPress, Looker Studio dashboards, Zapier, webhook configuration.
-
-SERVICES & PRICING:
-1. Meta Ads Management – ₹15,000–₹25,000/month: Full campaign management, strategy, creative briefing, audience setup, optimization, weekly reporting, Meta Pixel + CAPI verification.
-2. Conversion Tracking Setup – ₹12,000–₹20,000: Meta Pixel + CAPI installation, GTM full container setup, GA4 event configuration, Google Ads conversion tracking, Data Layer implementation.
-3. Google Ads Management – ₹15,000–₹25,000/month: Search, Shopping, PMAX and Demand Gen campaigns, Google Merchant Center, conversion tracking, monthly reporting.
-4. WhatsApp Automation – ₹15,000–₹25,000: Meta Cloud API integration, abandoned cart recovery flow, post-purchase follow-up, CRM connectivity via Odoo or Zapier, broadcast campaign setup.
-5. Full MarTech Stack – ₹35,000–₹50,000: Complete end-to-end setup — Meta + Google Ads, Pixel + CAPI + GTM + GA4, WhatsApp automation, CRM integration, Looker Studio dashboard.
-6. Ad Account Audit – ₹5,000–₹8,000: Deep audit of Meta or Google Ads account — tracking gaps, audience issues, budget waste, creative performance — with prioritized fix recommendations report.
-
-CASE STUDIES:
-1. Anutilam (D2C E-commerce):
-   - Problem: Broken Pixel, no attribution, only 5–6 orders/month
-   - Solution: Full audit, rebuilt Meta Pixel + CAPI from scratch, phased awareness-to-sales campaign strategy, built remarketing ecosystem, WhatsApp automation for abandoned cart + post-purchase
-   - Result: Scaled to 100–150 orders/day, ₹1–1.5L monthly revenue on ₹10–15k ad budget — 6x+ ROAS
-
-2. Jagtap Horticulture (B2B + E-commerce):
-   - Problem: No tracking infrastructure, needed full MarTech stack for 700-product business
-   - Solution: Built GTM + GA4 + Meta Pixel + CAPI on Odoo website, integrated WhatsApp Cloud API with Odoo 19 CRM, connected Meta Lead Ads via Zapier, ran B2B landscape development campaigns
-   - Result: ₹70–90 CPL for B2B leads, ₹1L+ monthly ad budget managed, 700+ products tracked
-
-TONE: Professional but friendly, concise, not salesy. Answer questions directly. If someone asks about pricing, give the range clearly. If unsure about something specific, direct them to email salgarchandrakant4@gmail.com or WhatsApp +91 70307 30440.`;
-
-  let gbMsgs = [], gbOpen = false, gbLeadDone = false;
-
-  window.gbToggle = function () {
-    gbOpen = !gbOpen;
-    document.getElementById('gb-window').classList.toggle('open', gbOpen);
-    document.getElementById('gb-launcher').classList.toggle('open', gbOpen);
-    if (gbOpen && gbMsgs.length === 0) gbInit();
-  };
-
-  function gbInit() {
-    gbAddBot("Hey there! 👋 I'm the GoalBlaze AI — happy to answer questions about services, pricing, or Chandrakant's work. What brings you here?", [
-      "Services & Pricing", "Case Studies", "About Chandrakant", "I have a project"
-    ]);
-  }
-
-  function gbAddBot(text, qr = []) {
-    const c = document.getElementById('gb-messages');
-    const d = document.createElement('div');
-    d.className = 'gb-msg bot';
-    d.innerHTML = `<div class="gb-bubble">${text}</div>`;
-    if (qr.length) {
-      const q = document.createElement('div');
-      q.className = 'gb-quick-replies';
-      qr.forEach(label => {
-        const b = document.createElement('button');
-        b.className = 'gb-qr'; b.textContent = label;
-        b.onclick = () => { gbRemoveQR(); gbSend(label); };
-        q.appendChild(b);
-      });
-      d.appendChild(q);
-    }
-    c.appendChild(d); c.scrollTop = c.scrollHeight;
-  }
-
-  function gbAddUser(text) {
-    const c = document.getElementById('gb-messages');
-    const d = document.createElement('div');
-    d.className = 'gb-msg user';
-    d.innerHTML = `<div class="gb-bubble">${gbEsc(text)}</div>`;
-    c.appendChild(d); c.scrollTop = c.scrollHeight;
-  }
-
-  function gbShowTyping() {
-    const c = document.getElementById('gb-messages');
-    const d = document.createElement('div');
-    d.className = 'gb-msg bot'; d.id = 'gb-typing';
-    d.innerHTML = `<div class="gb-typing"><div class="gb-dot"></div><div class="gb-dot"></div><div class="gb-dot"></div></div>`;
-    c.appendChild(d); c.scrollTop = c.scrollHeight;
-  }
-
-  function gbRemoveTyping() { const t = document.getElementById('gb-typing'); if (t) t.remove(); }
-  function gbRemoveQR() { document.querySelectorAll('.gb-quick-replies').forEach(e => e.remove()); }
-
-  function gbShowLeadForm() {
-    const c = document.getElementById('gb-messages');
-    const d = document.createElement('div');
-    d.className = 'gb-msg bot';
-    d.innerHTML = `<div class="gb-bubble">Let's get you connected! Fill this quick form 👇
-      <div class="gb-lead-form">
-        <input id="gb-lf-name" placeholder="Your name" type="text"/>
-        <input id="gb-lf-email" placeholder="Email address" type="email"/>
-        <textarea id="gb-lf-req" placeholder="What do you need help with?"></textarea>
-        <button onclick="gbSubmitLead()">Send →</button>
-      </div></div>`;
-    c.appendChild(d); c.scrollTop = c.scrollHeight;
-  }
-
-  window.gbSubmitLead = function () {
-    const name = document.getElementById('gb-lf-name').value.trim();
-    const email = document.getElementById('gb-lf-email').value.trim();
-    if (!name || !email) { alert('Please enter your name and email.'); return; }
-    gbLeadDone = true;
-    document.querySelector('.gb-lead-form').closest('.gb-bubble').innerHTML =
-      `✅ Got it, <strong>${gbEsc(name)}</strong>! Chandrakant will reach out at <strong>${gbEsc(email)}</strong> within 24 hours.`;
-  };
-
-  window.gbSend = async function (override) {
-    const inp = document.getElementById('gb-input');
-    const text = override || inp.value.trim();
-    if (!text) return;
-    inp.value = '';
-    gbRemoveQR();
-    gbAddUser(text);
-
-    const leadKws = ['hire', 'project', 'quote', 'work together', 'contact', 'get started', 'i need', 'help me', 'reach out', 'discuss', 'talk'];
-    if (!gbLeadDone && leadKws.some(k => text.toLowerCase().includes(k))) {
-      gbMsgs.push({ role: 'user', content: text });
-      gbShowLeadForm();
-      return;
-    }
-
-    gbMsgs.push({ role: 'user', content: text });
-    gbShowTyping();
-
-    try {
-      const res = await fetch(WORKER_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ system: GB_CONTEXT, messages: gbMsgs.slice(-10) })
-      });
-      const data = await res.json();
-      const reply = data.text || "Sorry, couldn't get a response. Email salgarchandrakant4@gmail.com directly.";
-      gbRemoveTyping();
-      gbMsgs.push({ role: 'assistant', content: reply });
-      const fmt = reply.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
-      const c = document.getElementById('gb-messages');
-      const d = document.createElement('div');
-      d.className = 'gb-msg bot';
-      d.innerHTML = `<div class="gb-bubble">${fmt}</div>`;
-      c.appendChild(d); c.scrollTop = c.scrollHeight;
-    } catch (e) {
-      gbRemoveTyping();
-      gbAddBot("Oops, something went wrong. Please email salgarchandrakant4@gmail.com directly.");
-    }
-  };
-
-  function gbEsc(s) {
-    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  }
-})();
-</script>
-<!-- ========== END GOALBLAZE CHATBOT ========== -->
 </body>
 </html>
